@@ -23,7 +23,11 @@
 
 #include <cstring>
 #include <string>
+#ifdef _WIN32
+#include <Windows.h>
+#else
 #include <unistd.h>
+#endif
 
 #include "error_numbers.h"
 #include "filesys.h"
@@ -355,7 +359,7 @@ int SCHED_CONFIG::parse(FILE* f) {
         // there are lots of tags the scheduler doesn't know about
 
         xp.skip_unexpected(false, "SCHED_CONFIG::parse");
-    }   
+    }
     return ERR_XML_PARSE;
 }
 

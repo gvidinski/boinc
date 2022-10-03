@@ -110,7 +110,7 @@
       <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Lib>
-      <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/debug/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/debug/lib;$(SolutionDir)Build\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Lib>

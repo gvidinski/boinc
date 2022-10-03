@@ -48,7 +48,13 @@
 //                              punish host
 
 #include "config.h"
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
 #include <unistd.h>
+#endif
+
 #include <climits>
 #include <cmath>
 #include <ctime>

@@ -9,16 +9,19 @@
 // https://boinc.berkeley.edu/trac/wiki/TranslateProject for details
 
 require_once("../inc/util.inc");
+require_once("../inc/boinc_db.inc");
 
 //-------------- Project name and owner
 
-define("PROJECT", "REPLACE WITH PROJECT NAME");
-define("COPYRIGHT_HOLDER", "REPLACE WITH COPYRIGHT HOLDER");
+define("PROJECT", "Asteroids@home");
+define("COPYRIGHT_HOLDER", " Asteroids@home | Astronomical Institute st Charles University of Prague");
 
 //-------------- URLs and directories
 
 $master_url = parse_config(get_config(), "<master_url>");
 define("URL_BASE", $master_url);
+$base = parse_config(get_config(), "<base>");
+define("BASE", $base);
 define("IMAGE_PATH", "../user_profile/images/");
 define("IMAGE_URL", "user_profile/images/");
 define("PROFILE_PATH", "../user_profile/");
@@ -51,12 +54,15 @@ define("POST_REPORT_EMAILS", "moderator1@$master_url|moderator2@$master_url");
 // add your own stylesheets (included after bootstrap)
 //define("STYLESHEET", "aaa.css");
 //define("STYLESHEET2", "bbb.css");
+define("STYLESHEET", "/css/mainlight.css");
+define("STYLESHEET2", "/css/customlight.css");
+define("STYLESHEET3", "/css/font-awesome.min.css");
 
 //-------------- enable/disable web features
 
 define("FORUM_QA_MERGED_MODE", true);
     // Set to true to merge Message boards and Q&A section
-define ("DISABLE_PROFILES", true);
+define ("DISABLE_PROFILES", false);
     // enable profiles only after enabling reCAPTCHA
     // https://boinc.berkeley.edu/trac/wiki/ProtectionFromSpam
 define("USE_STOPFORUMSPAM", true);
@@ -82,6 +88,28 @@ define('MAX_JOBS_PREF', false);
     // user can choose max # of jobs in progress
 define('MAX_CPUS_PREF', false);
     // user can choose max # of CPUs to use
+
+global $boincstats_id;
+$boincstats_id = 134;
+
+class BoincCustomUser extends BoincUser{
+    static function sum($field, $clause=null) {
+        $db = BoincDb::get();
+        return $db->sum('user', $field);
+    }
+
+    static function count($clause="TRUE") {
+        $db = BoincDb::get();
+        return $db->count('user');
+    }
+}
+
+class BoincCustomWorkunit extends BoincWorkunit{
+    static function count($clause="TRUE") {
+        $db = BoincDb::get();
+        return $db->count('workunit', $clause);
+    }
+}
 
 //-------------- PHPMailer
 
@@ -119,29 +147,192 @@ function make_php_mailer() {
 // if you need to open divs here close them in project_footer()
 //
 function project_banner($title, $prefix, $is_main) {
+    echo '
+    <header>
+    ';
+
     if ($is_main) {
-        echo '<img class="img-responsive" style="width:100%" src="img/water.jpg">';
+        // echo '
+        // <img class="img-banner" src="img/water.jpg">
+        // ';
+        //echo ' <img class="img-fluid" style="width:100%" src="img/water.jpg">';
+
+        echo '        
+        <div class="row banner-row">
+            <img src="img/asteroids_at_home_banner.png" class="img-banner"/>
+            <img src="img/asteroids_at_home_logo.png" class="overlay-trilogo" />
+            <img src="img/white_grad.png" class="banner_overlay"/>
+            <!--<object type="image/svg+xml" data="img/logo_mff_en.svg" alt="Trio-Logo" class="overlay-trilogo">Trio-Logo</object>
+            <img src="img/253px-Charles-University-symbol-4.svg.png" alt="CUNI" class="overlay-cuni-stacked"/>
+            <a id="link_asteroidsathome" class="hide-ext-link" href="http://astro.troja.mff.cuni.cz/index_en.html" title="Faculty of Mathematics and Physics" target="_blank"></a>
+            <a id="link_cuni" href="http://www.cuni.cz/UKENG-1.html" title="Charles University"></a>
+            <a id="link_cuni2" href="http://www.cuni.cz/UKENG-1.html">Charles University</a>
+            -->
+        ';
+        echo '    
+        </div>
+
+    ';
     }
+
+    echo '    
+
+    <div class="row blue">
+    ';
     sample_navbar(secure_url_base(), get_logged_in_user(false), false);
-    if ($title) {
-        echo "<h2>$title</h2>\n";
+    echo '         
+    </header>
+
+    
+    <!-- </div> <!-- "main" -->
+    <div class="wrapper">
+    ';
+
+    if($title){
+        echo '  <div class="content">
+        <div class="row">
+        <div class="col-lg-6">
+        <div class="mainnav">
+        <h2 class="headline">'.$title.'</h2>
+        </div>
+        </div>
+        </div>    
+      
+        ';
     }
 }
-//$fixed_navbar = true;
 
 function project_footer($show_return, $show_date, $prefix) {
     // If you include any links, prepend URL with $prefix
     //
-    echo '<br>
-        <a class="brand boinc-logo" href="https://boinc.berkeley.edu/"><img class="img-responsive center-block" src="'.secure_url_base().'img/pb_boinc.gif" alt="Powered by BOINC"></a>
-        <div class="form-group"></div>
-        <p class="text-center"> &copy;'.gmdate("Y ").COPYRIGHT_HOLDER.'</p>
+    echo '<footer class="footer">
+        <div class="container">
+        <div class="row">
+        <div class="col-md-4">
+            <!-- COLUMN 1 -->
+            <img src="'.$prefix.'img/asteroids_at_home_logo.png" title="Asteroids@home"
+                alt="Asteroids at home" class="logo">
+            <h3 class="sr-only">ABOUT US</h3>
+            <p>
+                The first Czech project in the system of distributed computing BOINC and the first in the Czech
+                Republic in the field of astronomy. This is Asteroids@home, a project that the Czech National
+                Team has helped bring to the world.
+            </p>
+            <!-- <p>Proactively aggregate B2B initiatives before extensive channels. Monotonectally extend interactive methods of empowerment through excellent applications. Rapidiously synergize visionary products with sticky technology.</p> -->
+            <br>
+            <address class="margin-bottom-30px">
+                <ul class="list-unstyled address">
+                    <li>Faculty of Mathematics and Physics
+                        <br>Charles University
+                    </li>
+                    <li>Ke Karlovu 3</li>
+                    <li>121 16 Praha 2</li>
+                    <li>Czech Republic</li>
+                </ul>
+            </address>
+            <!-- END COLUMN 1 -->
+        </div>
+        <div class="col-md-4">
+            <!-- COLUMN 2 -->
+            <h3 class="footer-heading">USEFUL LINKS</h3>
+            <div class="row margin-bottom-30px">
+                <div class="col-xs-6">
+                    <ul class="list-unstyled footer-nav">
+                        <li><a href="'.$prefix.'about.php">'.tra("About %1", PROJECT).'</a></li>
+                        <li><a href="'.$prefix.'old_news.php"/>'.tra("News").'</a></li>
+                        <li><a href="'.$prefix.'forum_index.php">'.tra("Message boards").'</a></li>
+                        <li><a href="'.$prefix.'team.php">'.tra("Tems").'</a></li>
+                        <li><a href="'.$prefix.'welcome.php">'.tra("Help").'</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6">
+                    <ul class="list-unstyled footer-nav">
+                        <li><a href="../files/poster_DPS_2012.pdf">Press Kit</a></li>
+                        <li><a href="'.$prefix.'forum_help_desk.php">'.tra("FAQ").'</a></li>
+                        <li><a href="'.$prefix.'info.php">Terms & Conditions</a></li>
+                        <li><a href="http://www.mff.cuni.cz/toUTF8.en/fakulta/struktura/lide/2968.htm">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END COLUMN 2 -->
+        </div>
+        <div class="col-md-4">
+            <!-- COLUMN 3 -->
+            <div class="row">
+                <div class="col-md-12 newsletter">
+                    <h3 class="footer-heading">NEWSLETTER</h3>
+                    <p>Get the latest update from us by subscribing to our newsletter.</p>
+                    <form class="newsletter-form" method="POST">
+                        <div class="input-group input-group-lg">
+                            <input type="email" class="form-control" name="email"
+                                placeholder="youremail@domain.com">
+                            <span class="input-group-btn"><button class="btn btn-primary" type="button"><i
+                                        class="fa fa-spinner fa-spin"></i><span>SUBSCRIBE</span></button>
+                            </span>
+                        </div>
+                        <div class="alert"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="row justify-content-around">
+                <div class="column-md-6 social-connect">
+                    <h3 class="footer-heading">GET CONNECTED</h3>
+                    <ul class="list-inline social-icons">
+                        <li><a href="https://twitter.com/AsteroidsAtHome" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.facebook.com/profile.php?id=100086279088328" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="'.$prefix.'rss_main.php" class="rss-bg"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                </div>
+                <div class="column-md-6 social-connect">
+                    <h3 class="footer-heading">POWERED BY</h3>
+                    <ul class="list-inline social-icons">
+                        <li>
+                            <a href="http://boinc.berkeley.edu/"><img class="rounded d-block" style="height: 50px;"
+                                src="'.$prefix.'img/boinc-logo.png" alt="Powered by BOINC"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- END COLUMN 3 -->
+        </div>
+    </div>
+        </div>
+        <!-- COPYRIGHT -->
+        <div class="row text-center copyright">
+            <div class="col-md-12">
+            <span>Copyright &copy; '.gmdate("Y ").COPYRIGHT_HOLDER.'</span>
+            </div>
+        </div>
+        <!-- END COPYRIGHT -->
     ';
+    // echo '<br>
+    //     <div class="container">
+    //     <a class="brand boinc-logo" href="https://boinc.berkeley.edu/"><img class="img-responsive center-block" src="'.secure_url_base().'img/pb_boinc.gif" alt="Powered by BOINC"></a>
+    //     <div class="form-group"></div>
+    //     <p class="text-center"> &copy;'.gmdate("Y ").COPYRIGHT_HOLDER.'</p>
+    // ';
     if ($show_date) {
         $t = time_str(time());
         echo "<center><small>".tra("Generated")." $t</small><center>\n";
     }
+    echo '</footer>
+    ';
 }
+
+// function project_footer($show_return, $show_date, $prefix) {
+//     // If you include any links, prepend URL with $prefix
+//     //
+//     echo '<br>
+//         <a class="brand boinc-logo" href="https://boinc.berkeley.edu/"><img class="img-responsive center-block" src="'.secure_url_base().'img/pb_boinc.gif" alt="Powered by BOINC"></a>
+//         <div class="form-group"></div>
+//         <p class="text-center"> &copy;'.gmdate("Y ").COPYRIGHT_HOLDER.'</p>
+//     ';
+//     if ($show_date) {
+//         $t = time_str(time());
+//         echo "<center><small>".tra("Generated")." $t</small><center>\n";
+//     }
+// }
 
 //-------------- Ops access control
 
@@ -219,7 +410,7 @@ function project_delete_account($user) {
 
 //-------------- Support for per-app credit
 
-if (0) {
+// if (0) {
 
 // show project-specific credit on user/team pages
 //
@@ -243,6 +434,7 @@ function show_app_credit_user($user, $app_name, $appids) {
         " ($n tasks)"
     );
 }
+
 function show_app_credit_team($team, $app_name, $appids) {
     $t = 0;
     $a = 0;
@@ -255,6 +447,27 @@ function show_app_credit_team($team, $app_name, $appids) {
             $t += $ct->total;
             $a += $ct->expavg;
             $n += $ct->njobs;
+        }
+    }
+    row2("$app_name credit",
+        format_credit_large($t)." total, ".
+        format_credit($a)." average".
+        " ($n tasks)"
+    );
+}
+
+function show_app_totals($app_name, $appids) {
+    $t = 0;
+    $a = 0;
+    $n = 0;
+    foreach ($appids as $appid) {
+        $cu = BoincCreditUser::lookup(
+            "appid=$appid and credit_type=0"
+        );
+        if ($cu) {
+            $t += $cu->total;
+            $a += $cu->expavg;
+            $n += $cu->njobs;
         }
     }
     row2("$app_name credit",
@@ -289,6 +502,106 @@ function project_team_credit($team) {
     }
 }
 
-}   // if(0)
+// if (!defined('STATUS_PAGE_TTL')) {
+//     define('STATUS_PAGE_TTL', 3600);
+// }
+
+function get_sched_daemon(){
+    $c = simplexml_load_file("../../config.xml");
+    if (!$c) {
+        die("can't parse config file\n");
+    }
+
+    $daemons = $c->daemons;
+    $config = $c->config;
+    $main_host = trim((string)$config->host);
+    $local_daemons = array();
+
+    if ($config->sched_host) {
+        $sched_host = trim((string) $config->sched_host);
+    } else {
+        $sched_host = $main_host;
+    }
+    
+    if ($sched_host == $main_host) {
+        $y = new StdClass;
+        $y->cmd = "Scheduler";
+        $y->host = $sched_host;
+        $y->status = !file_exists("../../stop_sched");;
+        $local_daemons[] = $y;
+    } else {
+        $have_remote = true;
+    }
+
+    $x = new StdClass;
+    $x->local_daemons = $local_daemons;
+
+    return $x;
+}
+
+function get_daemon_status_for_summary($d) {
+    switch ($d->status) {
+    case 0:
+        $s = tra("Not Running");
+        // $c = "bg-danger";
+        break;
+    case 1:
+        $s = tra("Running");
+        // $c = "bg-success";
+        break;
+    default:
+        $s = tra("Disabled");
+        // $c = "bg-warning";
+        break;
+    }
+
+    return $s;
+}
+
+function get_job_status_for_summary() {
+    $s = unserialize(get_cached_data(STATUS_PAGE_TTL, "job_status"));
+    if ($s) {
+        return $s;
+    }
+
+    $s = new StdClass;
+    
+    $s->users_total = BoincUser::count("1=1");
+    $s->users_with_recent_credit = BoincUser::count("expavg_credit>1");
+    $s->users_with_credit = BoincUser::count("total_credit>1");
+    $s->users_past_24_hours = BoincUser::count("create_time > (unix_timestamp() - 86400)");
+    $s->hosts_with_recent_credit = BoincHost::count("expavg_credit>1");
+    $s->hosts_with_credit = BoincHost::count("total_credit>1");
+    $s->hosts_past_24_hours = BoincHost::count("create_time > (unix_timestamp() - 86400)");
+    $s->credit_past_24_hours = BoincCustomUser::sum("total_credit", "create_time > (unix_timestamp() - 86400)");
+    $s->total_credits = BoincUser::sum("total_credit");
+    $s->flops = BoincUser::sum("expavg_credit")/200;
+    $s->results_ready_to_send = BoincResult::count("server_state=2");
+    $s->results_in_progress = BoincResult::count("server_state=4");
+    $s->results_in_progress_new = BoincResult::count("server_state=4");
+    $s->wus_total = BoincCustomWorkunit::count();
+    $s->wus_valid_past_24_hours = BoincResult::count("server_state=5 and outcome=1 and validate_state=2 and received_time > (unix_timestamp() - 86400)");
+    
+    return $s;
+}
+
+function project_app_credit(){
+    echo '[project_totals()]
+    ';
+    global $sub_projects;
+    foreach ($sub_projects as $sp) {
+        show_app_totals($sp["name"], $sp["appids"]);
+    }
+}
+
+function admin_index_extra(){
+    echo 'Radim, do you need more functionality on this page? G.V.
+    ';
+    
+    }
+
+// }   // if(0)
+
+
 
 ?>

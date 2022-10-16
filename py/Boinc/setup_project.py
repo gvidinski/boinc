@@ -277,6 +277,8 @@ def create_project_dirs(dest_dir):
                    'html/stats',
                    'html/user',
                    'html/user/img',
+                   'html/user/css',
+                   'html/user/fonts',
                    'html/user_profile',
                    'html/user_profile/images'
     )
@@ -336,6 +338,8 @@ def install_boinc_files(dest_dir, install_web_files, install_server_files):
         install_glob(srcdir('html/user/*.png'), dest('html/user/img'))
         install_glob(srcdir('html/user/*.gif'), dest('html/user/img'))
         install_glob(srcdir('html/user/img/*.*'), dest('html/user/img'))
+        install_glob(srcdir('html/user/css/*.*'), dest('html/user/css'))
+        install_glob(srcdir('html/user/fonts/*.*'), dest('html/user/fonts'))
         if not os.path.exists(dest('html/user/motd.php')):
             shutil.copy(srcdir('html/user/sample_motd.php'), dest('html/user/motd.php'))
         os.system("rm -f "+dest('html/languages/translations/*'))
@@ -580,12 +584,30 @@ class Project:
             self.dest('html/user/bootstrap.min.js'))
         install(srcdir('html/user/sample_jquery.min.js'),
             self.dest('html/user/jquery.min.js'))
+        install(srcdir('html/user/favicon.ico'),
+            self.dest('html/user/favicon.ico'))
+
         install(srcdir('html/project.sample/project.inc'),
             self.dest('html/project/project.inc'))
         install(srcdir('html/project.sample/project_specific_prefs.inc'),
             self.dest('html/project/project_specific_prefs.inc'))
         install(srcdir('html/project.sample/cache_parameters.inc'),
             self.dest('html/project/cache_parameters.inc'))
+
+        install(srcdir('html/project.sample/project_description.php'),
+            self.dest('html/project/project_description.php'))
+        install(srcdir('html/project.sample/daemons.inc'),
+            self.dest('html/project/daemons.inc'))
+        install(srcdir('html/project.sample/hosts.html'),
+            self.dest('html/project/hosts.html'))
+        install(srcdir('html/project.sample/google_tag.html'),
+            self.dest('html/project/google_tag.html'))
+        install(srcdir('html/project.sample/server_summary.inc'),
+            self.dest('html/project/server_summary.inc'))
+        
+        install(srcdir('html/ops/ops_server_status.php'),
+            self.dest('html/ops/ops_server_status.php'))
+
         install(srcdir('tools/project.xml'), self.dest('project.xml'))
         install(srcdir('tools/gui_urls.xml'), self.dest('gui_urls.xml'))
         if not self.production:
@@ -593,7 +615,7 @@ class Project:
             install(srcdir('test/uc_wu_nodelete'), self.dest('templates/uc_wu'))
 
         content = '''
-<!-- <scheduler>{url}</scheduler> -->"
+<!-- <scheduler>{url}</scheduler> -->
 <link rel=\"boinc_scheduler\" href=\"url"\">
         '''.format(url=self.scheduler_url.strip())    
         f = open(self.dest('html/user', 'schedulers.txt'), 'w')

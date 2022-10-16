@@ -23,7 +23,10 @@ require_once("../inc/account.inc");
 check_get_args(array("next_url"));
 
 $next_url = get_str('next_url', true);
+
+// NOTE: When caling login_form.php from non secured content urlencode() will receive 'null' which isn't valid form PHP 8.1+.
 $next_url = urldecode($next_url);
+
 $next_url = sanitize_local_url($next_url);
 $next_url = urlencode($next_url);
 

@@ -26,16 +26,49 @@ if (!defined('UOTD_THRESHOLD')) {
 }
 
 function uotd_thumbnail($profile, $user) {
+    $link = "";
     if ($profile->has_picture) {
-        return "<a href=\"".url_base()."view_profile.php?userid=$user->id\"><img border=0 vspace=4 hspace=8 align=left src=\"".profile_thumb_url($user->id)."\" alt=\"".tra("User profile")."\"></a>";
-    } else {
-        return "";
+        $link = '           <div class="card-image" style="float: left;">
+                            <img style="height: 100px; display: block; padding-right: 15px;  margin: 0;" 
+                                src="'.profile_image_url($user->id).'" 
+                                alt="'.tra("User profile").'" \>
+                    </div>
+        ';
     }
+
+    return $link;
 }
 
 // show UOTD in a small box
 //
-function show_uotd($profile) {
+function show_uotd($profile){
+    $user = BoincUser::lookup_id($profile->userid);
+    echo'   <div class="card mb-3">
+            <h3 class="card-header">'.tra("User of the day").'</h3>
+            <div class="card-body">
+            '.uotd_thumbnail($profile, $user).'
+                <div class="card-info" style="float: left;">
+                    <h5 class="card-title">
+    ';
+    echo user_links($user, BADGE_HEIGHT_LARGE).'                    <br>
+    '; 
+    echo '                  </h5>   
+                    <h6 class="card-subtitle text-muted">'.$user->country.'</h6>
+                </div>
+    ';
+    // echo uotd_thumbnail($profile, $user);
+    $x = output_transform($profile->response1);
+    $x = sanitize_tags($x);
+    
+    echo '       </div>
+                <div class="card-body">
+                                <p class="card-text">'.sub_sentence($x, ' ', 300, true).'</p>
+            </div>
+        </div>      
+    ';
+}
+
+function show_uotd_old($profile) {
     $user = BoincUser::lookup_id($profile->userid);
     echo uotd_thumbnail($profile, $user);
     echo user_links($user, BADGE_HEIGHT_MEDIUM)."<br>";

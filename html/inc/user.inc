@@ -339,7 +339,7 @@ function friend_links($user) {
 // if $badge_height is > 0, show badges
 // if $name_limit, limit name to N chars
 //
-function user_links($user, $badge_height=0, $name_limit=0) {
+function user_links($user, $badge_height=0, $name_limit=0){
     BoincForumPrefs::lookup($user);
     if (is_banished($user)) {
         return "(banished: ID $user->id)";
@@ -347,13 +347,45 @@ function user_links($user, $badge_height=0, $name_limit=0) {
     $x = "";
     if ($user->has_profile) {
         $img_url = url_base()."img/head_20.png";
-        $x .= ' <a href="'.url_base().'view_profile.php?userid='.$user->id.'"><img title="View the profile of '.$user->name.'" src="'.$img_url.'" alt="Profile"></a>';
+        $x .= '                 <a href="'.url_base().'view_profile.php?userid='.$user->id.'">
+                        <img title="View the profile of '.$user->name.'" src="'.$img_url.'" alt="Profile">
+                    </a>
+        ';
     }
     $name = $user->name;
     if ($name_limit && strlen($name) > $name_limit) {
         $name = substr($name, 0, $name_limit)."...";
     }
-    $x .= " <a href=\"".url_base()."show_user.php?userid=".$user->id."\">".$name."</a>";
+    $x .= '             <a href="'.url_base().'show_user.php?userid='.$user->id.'" class="card-link">'.$name.'</a>
+    ';
+    if (function_exists("project_user_links")){
+        $x .= project_user_links($user);
+    }
+    if ($badge_height) {
+        $x .= badges_string(true, $user, $badge_height);
+    }
+    return $name_limit?"<nobr>$x</nobr>":$x;
+}
+
+function user_links_old($user, $badge_height=0, $name_limit=0) {
+    BoincForumPrefs::lookup($user);
+    if (is_banished($user)) {
+        return "(banished: ID $user->id)";
+    }
+    $x = "";
+    if ($user->has_profile) {
+        $img_url = url_base()."img/head_20.png";
+        $x .= ' <a href="'.url_base().'view_profile.php?userid='.$user->id.'">
+            <img title="View the profile of '.$user->name.'" src="'.$img_url.'" alt="Profile">
+        </a>
+        ';
+    }
+    $name = $user->name;
+    if ($name_limit && strlen($name) > $name_limit) {
+        $name = substr($name, 0, $name_limit)."...";
+    }
+    $x .= " <a href=\"".url_base()."show_user.php?userid=".$user->id."\">".$name."</a>
+    ";
     if (function_exists("project_user_links")){
         $x .= project_user_links($user);
     }

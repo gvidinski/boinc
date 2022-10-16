@@ -26,8 +26,8 @@ $stripchart_cgi_url = parse_config($config, "<stripchart_cgi_url>");
 
 db_init();
 
-$title = "Project Management";
-admin_page_head($title);
+$ops_title = "Project Management";
+admin_page_head($ops_title);
 
 // Notification area
 echo "<ul>\n";
@@ -148,6 +148,8 @@ echo "
     </table>
 ";
 
+echo '<p>Additional <strong><a href="ops_server_status.php" target=_blank>server status</a></strong> page.</p>
+';
 // Result Summaries:
 
 $show_deprecated = get_str("show_deprecated", true);

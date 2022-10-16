@@ -129,6 +129,13 @@ define('KILO', 1024);
 define('MEGA', 1024*KILO);
 define('GIGA', 1024*MEGA);
 
+function test_credit(){
+
+    if(function_exists("project_app_credit")){
+        echo '1233333';
+    }
+}
+
 // return true if this page is HTTPS
 //
 function is_https() {
@@ -263,7 +270,8 @@ function page_head(
     $did_page_head = true;
     $url_base = url_base();
 
-    $rssname = "RSS 2.0";
+	$t = $title?$title:PROJECT;
+    $rssname = $t." RSS 2.0";
     $rsslink = $url_base."rss_main.php";
 
     if (!$caching) {
@@ -278,15 +286,15 @@ function page_head(
             // for HTTP/1.0
     }
 
-    echo '<!DOCTYPE html>
-        <html lang="en">
-        <head>
-    ';
+    echo "<!DOCTYPE html>\n";
+    echo "  <html lang=\"en\">\n";
+    echo "      <head>\n";
+
     if (defined('GLOBAL_HEAD_EXTRA')) {
         echo GLOBAL_HEAD_EXTRA;
     }
-    echo '
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    echo '          <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+                <meta name="adopted-design" content="Georgi Vidinski | gvidinski-at-gmail-dot-com">
     ';
     if ($head_extra) {
         echo "\n$head_extra\n";
@@ -294,12 +302,13 @@ function page_head(
     if ($is_main && (!defined('NO_COMPUTING')||!NO_COMPUTING)) {
         readfile("schedulers.txt");
     }
-
-    $t = $title?$title:PROJECT;
-    echo "<title>$t</title>\n";
-    echo '
-        <meta charset="utf-8">
+    
+    echo "		  <title>$t</title>\n";
+    echo '          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     ';
+    // echo '
+    //     <meta charset="utf-8">
+    // ';
     if (DARK_MODE) {
         echo <<<EOT
 <script>
@@ -308,7 +317,8 @@ function page_head(
     document.documentElement.style.display = 'none';
     document.head.insertAdjacentHTML(
         'beforeend',
-        '<link rel="stylesheet" href="sample_bootstrap.min.css" onload="document.documentElement.style.display = \'\'"><link rel="stylesheet" href="custom.css">'
+        '<link rel="stylesheet" href="sample_bootstrap.min.css" onload="document.documentElement.style.display = \'\'">
+        <link rel="stylesheet" href="custom.css">'
     );
   }
 </script>
@@ -318,39 +328,57 @@ function page_head(
 <link rel="stylesheet" href="custom.css" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)">
 EOT;
     } else {
-        echo '
-            <link type="text/css" rel="stylesheet" href="'.secure_url_base().'/bootstrap.min.css" media="all">
+        echo '      <link type="text/css" rel="stylesheet" href="'.secure_url_base().'/css/bootstrap.css" media="screen">
         ';
+            // echo'       <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+            // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.4.1/dist/cerulean/bootstrap.css" crossorigin="anonymous">
+            //   <!--      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+            // ';
     }
+
     if (defined('STYLESHEET')) {
         $stylesheet = $url_base.STYLESHEET;
-        echo "
-            <link rel=stylesheet type=\"text/css\" href=\"$stylesheet\">
-        ";
+        echo "      <link rel=stylesheet type=\"text/css\" href=\"$stylesheet\" media=\"screen\">
+    ";
     }
     if (defined('STYLESHEET2')) {
         $stylesheet2 = $url_base.STYLESHEET2;
-        echo "
-            <link rel=stylesheet type=\"text/css\" href=\"$stylesheet2\">
-        ";
+        echo "      <link rel=stylesheet type=\"text/css\" href=\"$stylesheet2\" media=\"screen\">
+    ";
+    }
+    if (defined('STYLESHEET3')) {
+        $stylesheet3 = $url_base.STYLESHEET3;
+        echo "      <link rel=stylesheet type=\"text/css\" href=\"$stylesheet3\" media=\"screen\">
+    ";
     }
 
     if (defined("SHORTCUT_ICON")) {
-        echo '<link rel="icon" type="image/x-icon" href="'.SHORTCUT_ICON.'"/>
-';
+        echo '      <link rel="icon" type="image/x-icon" href="'.SHORTCUT_ICON.'"/>
+    ';
     }
 
-    echo "
-        <link rel=alternate type=\"application/rss+xml\" title=\"$rssname\" href=\"$rsslink\">
+    echo "      <link rel=alternate type=\"application/rss+xml\" title=\"$rssname\" href=\"$rsslink\">\n";
+	echo "      <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\" />\n";
+	//echo "      <script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" integrity=\"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n\" crossorigin=\"anonymous\"></script>\n";
+	//echo "      <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\" integrity=\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\" crossorigin=\"anonymous\"></script>\n";
+	echo '		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>';
+	echo '    
         </head>
-    ";
+    ';
+    include("../project/google_tag.html");
+
     if ($fixed_navbar) {
         $body_attrs .= ' style="padding-top:70px"';
     }
     echo "<body $body_attrs>";
     display_cvs_versions();
-    echo '<div class="container-fluid">
-    ';
+	// echo '<div class="wrapper">
+	echo  '<!-- <div class="main"> -->
+	';
+    // echo '<div class="container-fluid">
+    // ';
 
     switch($title) {    //kludge
     case tra("Log in"):
@@ -367,26 +395,50 @@ EOT;
 
 // See the comments for page_head()
 //
-if (!function_exists("page_tail")){
-function page_tail(
-    $show_date=false,
-        // true for pages that are generated periodically rather than on the fly
-    $url_prefix="",
-        // use for pages not at top level
-    $is_main=false
-        // passed to project_footer;
-) {
-    echo "<br>\n";
-    project_footer($is_main, $show_date, $url_prefix);
-    echo '
-        <script src="'.secure_url_base().'/jquery.min.js"></script>
-        <script src="'.secure_url_base().'/bootstrap.min.js"></script>
-        </div>
-        </body>
-        </html>
-    ';
+if (!function_exists("page_tail"))
+{
+	function page_tail(
+		$show_date=false,
+			// true for pages that are generated periodically rather than on the fly
+		$url_prefix="",
+			// use for pages not at top level
+		$is_main=false
+			// passed to project_footer;
+	) {
+		echo '<br>
+		</div>
+		</div>
+		';
+		project_footer($is_main, $show_date, $url_prefix);
+
+		echo '
+				</div>
+			</body>
+		</html>
+		';
+	}
 }
-}
+
+// if (!function_exists("page_tail")){
+// function page_tail(
+//     $show_date=false,
+//         // true for pages that are generated periodically rather than on the fly
+//     $url_prefix="",
+//         // use for pages not at top level
+//     $is_main=false
+//         // passed to project_footer;
+// ) {
+//     echo "<br>\n";
+//     project_footer($is_main, $show_date, $url_prefix);
+//     echo '
+//         './/<script src="'.secure_url_base().'/jquery.min.js"></script>
+//         //<script src="'.secure_url_base().'/bootstrap.js"></script>
+//         '</div>
+//         </body>
+//         </html>
+//     ';
+// }
+// }
 
 function display_cvs_versions(){
     global $cvs_version_tracker;
@@ -526,7 +578,7 @@ define('VALUE_ATTRS_ERR', 'class="danger" style="padding-left:12px"');
 function row2($x, $y, $show_error=false, $lwidth='40%') {
     if ($x==="") $x="<br>";
     if ($y==="") $y="<br>";
-    $attrs = $show_error?VALUE_ATTRS_ERR:VALUE_ATTRS;
+    $attrs = $show_error ? VALUE_ATTRS_ERR : VALUE_ATTRS;
     echo "<tr>
         <td width=\"$lwidth\" ".NAME_ATTRS.">$x</td>
         <td $attrs >$y</td>
@@ -717,14 +769,14 @@ function get_int($name, $optional=false) {
     $x=null;
     if (isset($_GET[$name])) $x = $_GET[$name];
     if (!is_numeric($x)) {
-        if ($optional) {
-            if ($x) {
-                Header("Location: non_num_arg.html");
+		if ($optional) {
+			if ($x) {
+				Header("Location: non_num_arg.html");
                 die;
             }
             return null;
         } else {
-            Header("Location: missing_arg_$name.html");
+			Header("Location: missing_arg_$name.html");
             die;
         }
     }
@@ -773,7 +825,9 @@ function get_str($name, $optional=false) {
         if (!$optional) {
             error_page("missing or bad parameter: $name");
         }
-        $x = null;
+        // $x = null;
+		// NOTE: When caling login_form.php from non secured content urlencode() will receive 'null' which isn't valid form PHP 8.1+.
+		$x = "";
     }
     return undo_magic_quotes($x);
 }
@@ -785,7 +839,9 @@ function post_str($name, $optional=false) {
         if (!$optional) {
             error_page("missing or bad parameter: $name");
         }
-        $x = null;
+	
+		// $x = null;
+		$x = "";
     }
     return undo_magic_quotes($x);
 }
@@ -1083,7 +1139,7 @@ function redirect_to_secure_url() {
     }
 }
 
-if (php_sapi_name() != "cli") {
+if (php_sapi_name() != "cli" || BASE != "http")  {
     redirect_to_secure_url();
 }
 

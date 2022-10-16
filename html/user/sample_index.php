@@ -31,7 +31,7 @@ require_once("../inc/cache.inc");
 require_once("../inc/uotd.inc");
 require_once("../inc/sanitize_html.inc");
 require_once("../inc/text_transform.inc");
-require_once("../project/project.inc");
+// require_once("../project/project.inc");
 require_once("../inc/bootstrap.inc");
 
 $config = get_config();
@@ -60,9 +60,9 @@ function top() {
 
 function left(){
     global $user, $no_web_account_creation, $master_url, $project_id;
-    panel(
-        $user?tra("Welcome, %1", $user->name):tra("What is %1?", PROJECT),
-        function() use($user) {
+    $title = $user?tra("Welcome, %1", $user->name):tra("What is %1?", PROJECT);
+    panel($title,
+        function() use($user, $title) {
             global $no_web_account_creation, $master_url, $project_id;
             if ($user) {
                 $dt = time() - $user->create_time;
@@ -108,7 +108,9 @@ function left(){
                 }
                 echo "</ul>\n";
             } else {
-                echo "<p>";
+                echo '              <div class="mainnav">
+                                <h2 class="headline">'.$title.'</h2>
+                ';
                 $pd = "../project/project_description.php";
                 if (file_exists($pd)) {
                     include($pd);
@@ -117,7 +119,7 @@ function left(){
                         that prints a short description of your project.
                     ";
                 }
-                echo "</p>\n";
+
                 if (NO_COMPUTING) {
                     if (!$no_web_account_creation) {
                         echo "
@@ -128,26 +130,39 @@ function left(){
                     // use auto-attach if possible
                     //
                     if (!$no_web_account_creation) {
-                        echo '<center><a href="signup.php" class="btn btn-success"><font size=+2>'.tra('Join %1', PROJECT).'</font></a></center>';
+                        echo '  <center>
+                        <a href="signup.php" class="btn btn-success"><font size=+2>'.tra('Join %1', PROJECT).'</font></a>
+                        </center>
+                    ';
                     }
-                    echo "<p><p>".tra("Already joined? %1Log in%2.",
-                        "<a href=login_form.php>", "</a>"
-                    );
+                    echo '<p><p>'.tra("Already joined? %1Log in%2.",
+                        "<a href=login_form.php>", "</a>").'
+                        </div>
+                        ';
                 }
             }
+
+            // echo '<hr class="my-4">
+            echo '<br>
+            ';
+
+            global $stopped;
+            if (!$stopped) {
+                $profile = get_current_uotd();
+                if ($profile) {
+                    //panel(tra('User of the Day'),
+                    //function() use ($profile) {
+                        show_uotd($profile);
+                    //}
+                    //);
+                }
+            }
+            require_once("../project/server_summary.inc");
+            // test();
+            // include("server_status_summary.php");
+            get_server_summary();
         }
     );
-    global $stopped;
-    if (!$stopped) {
-        $profile = get_current_uotd();
-        if ($profile) {
-            panel(tra('User of the Day'),
-                function() use ($profile) {
-                    show_uotd($profile);
-                }
-            );
-        }
-    }
 }
 
 function right() {
@@ -155,15 +170,119 @@ function right() {
         function() {
             include("motd.php");
             if (!web_stopped()) {
+                echo '      <h2>'.tra('News').'</h2>
+                ';
                 show_news(0, 5);
+                echo '
+                ';
             }
+            
+            
         }
     );
+
+    echo '</div>
+        <hr class="my-4">
+    ';
+    
+}
+
+function links_panel($url_prefix){
+    echo '<div class="row">
+    <div class="col-lg-6">
+    <div class="card mb-6">
+        <h3 class="card-header">More info</h3>
+        <div class="card-body">
+            <ul>
+                <li> <a href="http://asteroidsathome.net/">'.tra("Detailed information about the project (English and Czech)").'</a></li>
+                <li> <a target="_blank" href="http://astro.troja.mff.cuni.cz/projects/asteroids3D/">DAMIT - Database of Asteroid Models from Inversion Techniques (English)</a></li>
+                <li> <a target="_blank" href="http://www.rni.helsinki.fi/~mjk/asteroids.html">Articles and math (English)</a></li>
+                <li> <a target="_blank" href="http://asteroidsathome.net/cs/article01.html">Detailed article about project (Czech)</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+<div class="card mb-6">
+    <h3 class="card-header">Participate</h3>
+    <div class="card-body">
+        <ul>
+
+            <li><a href="'.$url_prefix.'info.php">'.tra("Read our rules and policies").'</a>
+            </li>
+            <li>1) <a href="http://boinc.berkeley.edu/download.php">'.tra("Download").'</a>, <strong>'.tra("install").'</strong> '.tra("and").' <strong>'.tra("run").'</strong> '.tra("the BOINC software").';<br>
+            
+                2) '.tra("When prompted, enter the URL: ").' <strong>http://asteroidsathome.net/boinc/</strong>
+            </li>
+            <li> '.tra("If you have any problems").',
+                <a href="http://boinc.berkeley.edu/wiki/BOINC_Help" target="_blank">'.tra("get help here").'</a>
+
+
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+</div>
+<br>
+<div class="row">
+<div class="col-lg-6">
+    <div class="card mb-6">
+        <h3 class="card-header">Returning participants</h3>
+        <div class="card-body">
+            <ul>
+                <li><a href="'.$url_prefix.'home.php">Your account</a> - view stats, modify
+                    preferences
+                </li>
+                <li><a href="'.$url_prefix.'server_status.php">Server status</a>
+                </li>
+                <li><a href="'.$url_prefix.'cert1.php">Certificate</a>
+                </li>
+                <li><a href="'.$url_prefix.'apps.php">Applications</a>
+                </li>
+                <li><a href="'.$url_prefix.'team.php">Teams</a> - create or join a team
+                </li>
+            </ul>
+            <br>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="card mb-6">
+        <h3 class="card-header">Community</h3>
+        <div class="card-body">
+            <ul>
+                <li><a href="'.$url_prefix.'profile_menu.php">Profiles</a>
+                </li>
+                <li><a href="'.$url_prefix.'user_search.php">User search</a>
+                </li>
+                <li><a href="'.$url_prefix.'forum_index.php">Message boards</a>
+                </li>
+                <li><a href="'.$url_prefix.'forum_help_desk.php">Questions and Answers</a>
+                </li>
+                <li><a href="'.$url_prefix.'stats.php">Statistics</a>
+                </li>
+                <li><a href="'.$url_prefix.'language_select.php">Languages</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+
+    ';
 }
 
 page_head(null, null, true);
 
 grid('top', 'left', 'right');
+
+// $lp = "../project/link_panes.php";
+// if (file_exists($lp)) {
+// include($lp);
+
+links_panel(secure_url_base(),);
 
 page_tail(false, "", true);
 

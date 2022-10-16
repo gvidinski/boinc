@@ -30,7 +30,19 @@ if (defined('REMOTE_JOB_SUBMISSION') && REMOTE_JOB_SUBMISSION) {
 // $brand: the text or image to show at left of navbar
 // If text, put it in <a class="navbar-brand" ...
 //
-function navbar_start($brand, $fixed, $inverse) {
+function navbar_start($brand){
+    echo '          <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky" id="navbar">
+                '.$brand.'
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+    ';
+}
+
+function navbar_start_old($brand, $fixed, $inverse) {
     global $fixed_navbar;
     $class = "navbar";
     if ($inverse) {
@@ -60,37 +72,42 @@ function navbar_start($brand, $fixed, $inverse) {
 
 // call this to end it
 //
-function navbar_end() {
-    echo '
-      </ul>
-    </div>
-  </div>
-</nav>
+function navbar_end(){
+    echo'      </ul>
+                    </div>
+                </nav>
     ';
 }
+
+// function navbar_end_old() {
+//     echo '
+//       </ul>
+//     </div>
+//   </div>
+// </nav>
+//     ';
+// }
 
 // put the login/logout stuff at the right side of navbar
 //
 function navbar_right($user) {
     global $is_login_page;
-    echo '
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
+    echo '                  </ul>
+                      <ul class="navbar-nav justify-content-end">
     ';
     if (!$is_login_page) {
         if ($user) {
             echo sprintf('
-                <li><a href=%s%s>%s</a></li>
+                <li class="nav-item"><a href=%s%s>%s</a></li>
                 ', url_base(), USER_HOME, $user->name
             );
             $url_tokens = url_tokens($user->authenticator);
-            echo sprintf('<li><a href="%slogout.php?%s">Log out</a></li>',
+            echo sprintf('<li><a href="%slogout.php?%s" class="nav-link" >Log out</a></li>',
                 url_base(), $url_tokens
             );
         } else {
-            echo sprintf('
-                <li><a href="%ssignup.php">%s</a></li>
-                <li><a href="%slogin_form.php">%s</a></li>
+            echo sprintf('                    <li class="nav-item"><a href="%ssignup.php" class="nav-link" >%s</a></li>
+                        <li class="nav-item"><a href="%slogin_form.php" class="nav-link">%s</a></li>
                 ', url_base(),
                 tra("Join"),
                 url_base(),
@@ -102,27 +119,49 @@ function navbar_right($user) {
 
 // add a dropdown menu
 //
-function navbar_menu($name, $items) {
-    echo '
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$name.'
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-    ';
+function navbar_menu($name, $items){
+    echo '                      <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            '.$name.'
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">';
     foreach ($items as $item) {
         if (is_array($item)) {
-            echo '<li><a href="'.$item[1].'">'.$item[0].'</a></li>
-            ';
+            echo '                          
+                                <a class="dropdown-item" href="'.$item[1].'">'.$item[0].'</a>';
         } else {
             echo '<li class="dropdown-header">'.$item.'</li>
             ';
         }
     }
-    echo '
-        </ul>
-      </li>
+
+    echo '                
+                            </div>
+                          </li>
     ';
 }
+
+// function navbar_menu_old($name, $items) {
+//     echo '
+//       <li class="dropdown">
+//         <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$name.'
+//         <span class="caret"></span></a>
+//         <ul class="dropdown-menu">
+//     ';
+//     foreach ($items as $item) {
+//         if (is_array($item)) {
+//             echo '<li><a href="'.$item[1].'">'.$item[0].'</a></li>
+//             ';
+//         } else {
+//             echo '<li class="dropdown-header">'.$item.'</li>
+//             ';
+//         }
+//     }
+//     echo '
+//         </ul>
+//       </li>
+//     ';
+// }
 
 // add a single item (not menu)
 //
@@ -152,7 +191,8 @@ function sample_navbar(
     global $master_url;
 
     $brand = "<a class=\"navbar-brand\" href=$master_url>".PROJECT."</a>";
-    navbar_start($brand, $fixed, $inverse);
+    // navbar_start($brand, $fixed, $inverse);
+    navbar_start($brand);
 
     $x = array();
     if ($user) {
@@ -214,7 +254,15 @@ function sample_navbar(
 // output a panel.
 // $content_func is a function that generates the panel contents
 //
-function panel($title, $content_func, $class="panel-primary", $body_class="") {
+function panel($title, $content_func, $class="panel-primary", $body_class=""){
+    echo '  <div class="col-lg-6">
+    ';
+    $content_func();
+    echo '      </div>
+    ';
+}
+
+function panel_old($title, $content_func, $class="panel-primary", $body_class="") {
     echo sprintf('<div class="panel %s">
         ', $class
     );
@@ -240,7 +288,21 @@ function panel($title, $content_func, $class="panel-primary", $body_class="") {
 // are functions that generate the top, left, and right content
 // $left_width is the width of left column in 1/12 units.
 //
-function grid($top_func, $left_func, $right_func, $left_width=6) {
+function grid($top_func, $left_func, $right_func, $left_width=6){
+    echo '  <div class="content">
+        <div class="row">
+    ';
+
+    $left_func();
+    $right_func();
+    // echo '      <div class="col-lg-'.$right_width.'">
+    //             <div class="mainnav">
+    //         </div>
+    //     </div>
+    // ';
+}
+
+function grid_old($top_func, $left_func, $right_func, $left_width=6) {
     echo '
         <div class="container-fluid">
     ';
@@ -326,7 +388,7 @@ function form_input_text(
 ) {
     echo sprintf('
         <div class="form-group">
-            <label align=right class="%s">%s</label>
+            <label class="%s">%s</label>
             <div class="%s">
                 %s
             </div>
@@ -353,7 +415,7 @@ function form_attr($name, $value) {
 function form_input_textarea($label, $name, $value='', $nrows=4) {
     echo sprintf('
         <div class="form-group">
-            <label align=right class="%s" for="%s">%s</label>
+            <label class="%s" for="%s">%s</label>
             <div class="%s">
                 <textarea rows="%d" class="form-control" id="%s" name="%s">%s</textarea>
             </div>
@@ -369,7 +431,7 @@ function form_input_textarea($label, $name, $value='', $nrows=4) {
 function form_select($label, $name, $items) {
     echo sprintf('
         <div class="form-group">
-            <label align=right class="%s" for="%s">%s</label>
+            <label class="%s" for="%s">%s</label>
             <div class="%s">
                 <select class="form-control" id="%s" name="%s">
         ',
@@ -392,7 +454,7 @@ function form_select($label, $name, $items) {
 function form_select_multiple($label, $name, $items, $flags) {
     echo sprintf('
         <div class="form-group">
-            <label align=right class="%s" for="%s">%s</label>
+            <label class="%s" for="%s">%s</label>
             <div class="%s">
                 <select multiple class="form-control" id="%s" name="%s[]">
         ',
@@ -426,7 +488,7 @@ function checkbox_item_strings($items, $attrs='') {
 function form_checkboxes($label, $items, $attrs='') {
     echo sprintf('
         <div class="form-group">
-            <label align=right class="%s">%s</label>
+            <label class="%s">%s</label>
             <div class="%s">
         ',
         FORM_LEFT_CLASS, $label, FORM_RIGHT_CLASS
@@ -443,7 +505,7 @@ function form_checkboxes($label, $items, $attrs='') {
 function form_radio_buttons($label, $name, $items, $selected) {
     echo sprintf('
         <div class="form-group">
-            <label align=right class="%s">%s</label>
+            <label class="%s">%s</label>
             <div class="%s">
         ',
         FORM_LEFT_CLASS, $label, FORM_RIGHT_CLASS
@@ -466,7 +528,7 @@ function form_general($label, $item) {
     ';
     if (strlen($label)) {
         echo sprintf(
-'           <label align=right class="%s">%s</label>
+'           <label class="%s">%s</label>
             <div class="%s">%s</div>
         ',
             FORM_LEFT_CLASS, $label, FORM_RIGHT_CLASS, $item

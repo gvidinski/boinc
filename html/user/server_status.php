@@ -36,48 +36,11 @@ require_once("../inc/util.inc");
 require_once("../inc/xml.inc");
 require_once("../inc/boinc_db.inc");
 require_once("../inc/server_version.inc");
+// require_once("../project/project.inc");
+require_once("../project/daemons.inc");
 
 if (!defined('STATUS_PAGE_TTL')) {
     define('STATUS_PAGE_TTL', 3600);
-}
-
-// trim a daemon command for display.
-// For now, remove the cmdline args, but show the app if any
-//
-function command_display($cmd) {
-    $x = explode(" -", $cmd);
-    $prog = $x[0];
-    $x = strpos($cmd, "-app ");
-    if ($x) {
-        $y = substr($cmd, $x);
-        $y = explode(" ", $y);
-        $app = $y[1];
-        $prog .= " ($app)";
-    }
-    return $prog;
-}
-
-function daemon_html($d) {
-    switch ($d->status) {
-    case 0:
-        $s = tra("Not Running");
-        $c = "bg-danger";
-        break;
-    case 1:
-        $s = tra("Running");
-        $c = "bg-success";
-        break;
-    default:
-        $s = tra("Disabled");
-        $c = "bg-warning";
-        break;
-    }
-    echo "<tr>
-        <td>".command_display($d->cmd)."</td>
-        <td>$d->host</td>
-        <td class=\"$c\"><nobr>$s</nobr></td>
-        </tr>
-    ";
 }
 
 function daemon_xml($d) {
@@ -105,9 +68,19 @@ function item_html($name, $val) {
     //echo "<tr><td align=right>$name</td><td align=right>$val</td></tr>\n";
 }
 
+function show_hosts(){
+    if(file_exists("../project/hosts.html")){
+        echo '<h3>'.tra("Hosts").'</h3>
+        ';
+        
+        start_table("table-condensed");
+        include("../project/hosts.html");
+        end_table();
+    }
+}
+
 function show_status_html($x) {
     global $server_version, $server_version_str;
-
     page_head(tra("Project status"));
     $j = $x->jobs;
     $daemons = $x->daemons;
@@ -162,10 +135,13 @@ function show_status_html($x) {
             item_html("With credit", $j->hosts_with_credit);
             item_html("With recent credit", $j->hosts_with_recent_credit);
             item_html("Registered in past 24 hours", $j->hosts_past_24_hours);
-            item_html("Current GigaFLOPS", round($j->flops, 2));
+            item_html("Current TeraFLOPS", round($j->flops / 1000, 2));
             end_table();
     echo "</td></tr>\n";
     end_table();
+
+    show_hosts();
+
     echo "<h3>".tra("Tasks by application")."</h3>\n";
     start_table('table-striped');
     table_header(
@@ -177,9 +153,13 @@ function show_status_html($x) {
     );
     foreach ($j->apps as $app) {
         if ($app->info) {
-            $avg = round($app->info->avg, 2);
-            $min = round($app->info->min, 2);
-            $max = round($app->info->max, 2);
+            $avg = empty($app->info->avg) ? 0.0 : $app->info->avg;
+            $min = empty($app->info->min) ? 0.0 : $app->info->info;
+            $max = empty($app->info->max) ? 0.0 : $app->info->max;
+            
+            $avg = round($avg, 2);
+            $min = round($min, 2);
+            $max = round($max, 2);
             $x = $max?"$avg ($min - $max)":"---";
             $u = $app->info->users;
         } else {
@@ -268,200 +248,6 @@ function show_status_xml($x) {
 ";
 }
 
-function local_daemon_running($cmd, $pidname, $host) {
-    if (!$pidname) {
-        $cmd = trim($cmd);
-        $x = explode(" ", $cmd);
-        $prog = $x[0];
-        $pidname = $prog . '.pid';
-    }
-    $path = "../../pid_$host/$pidname";
-    if (is_file($path)) {
-        $pid = file_get_contents($path);
-        if ($pid) {
-            $pid = trim($pid);
-            $out = Array();
-            exec("ps -ww $pid", $out);
-            foreach ($out as $y) {
-                if (strstr($y, (string)$pid)) return 1;
-            }
-        }
-    }
-    return 0;
-}
-
-// returns a data structure of the form
-// local_daemons: array of
-//   cmd, status
-// remote_daemons: array of
-//   cmd, host, status
-// disabled_daemons: array of
-//   cmd, host
-//
-function get_daemon_status() {
-    $c = simplexml_load_file("../../config.xml");
-    if (!$c) {
-        die("can't parse config file\n");
-    }
-    $daemons = $c->daemons;
-    $config = $c->config;
-    $main_host = trim((string)$config->host);
-    $master_url = trim((string)$config->master_url);
-    $u = parse_url($master_url);
-    if (!array_key_exists("host", $u)) {
-        print_r($u);
-        die("can't parse URL $master_url");
-    }
-    $master_host = $u["host"];
-    if ($config->www_host) {
-        $web_host = trim((string) $config->www_host);
-    } else {
-        $web_host = $main_host;
-    }
-    if ($config->sched_host) {
-        $sched_host = trim((string) $config->sched_host);
-    } else {
-        $sched_host = $main_host;
-    }
-    $have_remote = false;
-    $local_daemons = array();
-    $disabled_daemons = array();
-
-    // the upload and download servers are sort of daemons too
-    //
-    $url = trim((string) $config->download_url);
-    $u = parse_url($url);
-    $h = $u["host"];
-    if ($h == $master_host) {
-        $y = new StdClass;
-        $y->cmd = "Download server";
-        $y->host = $h;
-        $y->status = 1;
-        $local_daemons[] = $y;
-    } else {
-        $have_remote = true;
-    }
-    $url = trim((string) $config->upload_url);
-    $u = parse_url($url);
-    $h = $u["host"];
-    if ($h == $master_host) {
-        $y = new StdClass;
-        $y->cmd = "Upload server";
-        $y->host = $h;
-        $y->status = !file_exists("../../stop_upload");;
-        $local_daemons[] = $y;
-    } else {
-        $have_remote = true;
-    }
-
-    // Scheduler is a daemon too
-    //
-    if ($sched_host == $main_host) {
-        $y = new StdClass;
-        $y->cmd = "Scheduler";
-        $y->host = $sched_host;
-        $y->status = !file_exists("../../stop_sched");;
-        $local_daemons[] = $y;
-    } else {
-        $have_remote = true;
-    }
-
-    foreach ($daemons->daemon as $d) {
-        if ((int)$d->disabled != 0) {
-            $x = new StdClass;
-            $x->cmd = (string)$d->cmd;
-            $x->host = (string)$d->host;
-            if (!$x->host) $x->host = $main_host;
-            $x->status = -1;
-            $disabled_daemons[] = $x;
-            continue;
-        }
-        $host = $d->host?(string)$d->host:$main_host;
-        if ($host != $web_host) {
-            $have_remote = true;
-            continue;
-        }
-        $x = new StdClass;
-        $x->cmd = (string)$d->cmd;
-        $x->status = local_daemon_running($x->cmd, trim($d->pid_file), $web_host);
-        $x->host = $web_host;
-        $local_daemons[] = $x;
-
-    }
-
-    $x = new StdClass;
-    $x->local_daemons = $local_daemons;
-    $x->disabled_daemons = $disabled_daemons;
-    $x->missing_remote_status = false;
-    $x->cached_time = 0;
-    $x->remote_daemons = array();
-    if ($have_remote) {
-        $f = @file_get_contents("../cache/remote_server_status");
-        if ($f) {
-            $x->remote_daemons = unserialize($f);
-            $x->cached_time = filemtime("../cache/remote_server_status");
-        } else {
-            $x->missing_remote_status = true;
-        }
-    }
-    return $x;
-}
-
-function get_job_status() {
-    $s = unserialize(get_cached_data(STATUS_PAGE_TTL, "job_status"));
-    if ($s) {
-        return $s;
-    }
-
-    $s = new StdClass;
-    $apps = BoincApp::enum("deprecated=0");
-    foreach ($apps as $app) {
-        $info = BoincDB::get()->lookup_fields("result", "stdClass",
-            "ceil(avg(elapsed_time)/3600*100)/100 as avg,
-            ceil(min(elapsed_time)/3600*100)/100 as min,
-            ceil(max(elapsed_time)/3600*100)/100 as max,
-            count(distinct userid) as users",
-            "appid = $app->id
-            AND validate_state=1
-            AND received_time > (unix_timestamp()-86400)
-            "
-        );
-        $app->info = $info;
-        $app->unsent = BoincResult::count("appid=$app->id and server_state=2");
-        $app->in_progress = BoincResult::count("appid=$app->id and server_state=4");
-    }
-    $s->apps = $apps;
-    $s->results_ready_to_send = BoincResult::count("server_state=2");
-    $s->results_in_progress = BoincResult::count("server_state=4");
-    $s->results_need_file_delete = BoincResult::count("file_delete_state=1");
-    $s->wus_need_validate = BoincWorkunit::count("need_validate=1");
-    $s->wus_need_assimilate = BoincWorkunit::count("assimilate_state=1");
-    $s->wus_need_file_delete = BoincWorkunit::count("file_delete_state=1");
-    $x = BoincDB::get()->lookup_fields("workunit", "stdClass", "MIN(transition_time) as min", "TRUE");
-    $gap = (time() - $x->min)/3600;
-    if (($gap < 0) || ($x->min == 0)) {
-        $gap = 0;
-    }
-    $s->transitioner_backlog = $gap;
-    $s->users_with_recent_credit = BoincUser::count("expavg_credit>1");
-    $s->users_with_credit = BoincUser::count("total_credit>1");
-    $s->users_past_24_hours = BoincUser::count("create_time > (unix_timestamp() - 86400)");
-    $s->hosts_with_recent_credit = BoincHost::count("expavg_credit>1");
-    $s->hosts_with_credit = BoincHost::count("total_credit>1");
-    $s->hosts_past_24_hours = BoincHost::count("create_time > (unix_timestamp() - 86400)");
-    $s->flops = BoincUser::sum("expavg_credit")/200;
-
-    $s->db_revision = null;
-    if (file_exists("../../db_revision")) {
-        $s->db_revision = trim(file_get_contents("../../db_revision"));
-    }
-
-    $s->cached_time = time();
-    $e = set_cached_data(STATUS_PAGE_TTL, serialize($s), "job_status");
-    if ($e) echo "set_cached_data(): $e\n";
-    return $s;
-}
-
 function show_counts_xml() {
     xml_header();
     echo "<job_counts>\n";
@@ -475,10 +261,15 @@ function show_counts_xml() {
 }
 
 function main() {
+    // $x = new StdClass; 
+    //     $x->daemons = get_daemon_status();
+    //     $x->jobs = get_job_status();
+    // show_status_html($x);
+
     if (get_int('counts', true)) {
         show_counts_xml();
     } else {
-        $x = new StdClass;
+        $x = new StdClass; 
         $x->daemons = get_daemon_status();
         $x->jobs = get_job_status();
         if (get_int('xml', true)) {

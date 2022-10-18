@@ -120,15 +120,15 @@ install_boinc_files(INSTALL_DIR, not options.server_only, not options.web_only)
 def upgrade_files(location):
     print(location)
     
-    install(srcdir('html/inv/bootstrap.inc'),
+    install(srcdir('html/inc/bootstrap.inc'),
         os.path.join(location, 'html/inc/bootstrap.inc'))
-    install(srcdir('html/inv/news.inc'),
+    install(srcdir('html/inc/news.inc'),
         os.path.join(location, 'html/inc/news.inc'))
-    install(srcdir('html/inv/uotd.inc'),
+    install(srcdir('html/inc/uotd.inc'),
         os.path.join(location, 'html/inc/uotd.inc'))
-    install(srcdir('html/inv/user.inc'),
+    install(srcdir('html/inc/user.inc'),
         os.path.join(location, 'html/inc/user.inc'))
-    install(srcdir('html/inv/util.inc'),
+    install(srcdir('html/inc/util.inc'),
         os.path.join(location, 'html/inc/util.inc'))    
     
     install(srcdir('html/user/favicon.ico'),
@@ -137,7 +137,7 @@ def upgrade_files(location):
         os.path.join(location, 'html/user/login_form.php'))
     install(srcdir('html/user/server_status.php'),
         os.path.join(location, 'html/user/server_status.php'))
-    install(srcdir('html/user/server_status.php'),
+    install(srcdir('html/user/sample_index.php'),
         os.path.join(location, 'html/user/index.php'))
     
     install(srcdir('html/project.sample/project.inc'),

@@ -117,46 +117,50 @@ def mkdir2(d):
 
 install_boinc_files(INSTALL_DIR, not options.server_only, not options.web_only)
 
-def upgrade_files(self):
+def upgrade_files(location):
+    print(location)
+    
     install(srcdir('html/inv/bootstrap.inc'),
-        self.dest('html/inc/bootstrap.inc'))
+        os.path.join(location, 'html/inc/bootstrap.inc'))
     install(srcdir('html/inv/news.inc'),
-        self.dest('html/inc/news.inc'))
+        os.path.join(location, 'html/inc/news.inc'))
     install(srcdir('html/inv/uotd.inc'),
-        self.dest('html/inc/uotd.inc'))
+        os.path.join(location, 'html/inc/uotd.inc'))
     install(srcdir('html/inv/user.inc'),
-        self.dest('html/inc/user.inc'))
+        os.path.join(location, 'html/inc/user.inc'))
     install(srcdir('html/inv/util.inc'),
-        self.dest('html/inc/util.inc'))    
+        os.path.join(location, 'html/inc/util.inc'))    
     
     install(srcdir('html/user/favicon.ico'),
-        self.dest('html/user/favicon.ico'))
+        os.path.join(location, 'html/user/favicon.ico'))
     install(srcdir('html/user/login_form.php'),
-        self.dest('html/user/login_form.php'))
+        os.path.join(location, 'html/user/login_form.php'))
     install(srcdir('html/user/server_status.php'),
-        self.dest('html/user/server_status.php'))
+        os.path.join(location, 'html/user/server_status.php'))
     install(srcdir('html/user/server_status.php'),
-        self.dest('html/user/index.php'))
+        os.path.join(location, 'html/user/index.php'))
     
     install(srcdir('html/project.sample/project.inc'),
-        self.dest('html/project/project.inc'))
+        os.path.join(location, 'html/project/project.inc'))
     install(srcdir('html/project.sample/project_specific_prefs.inc'),
-        self.dest('html/project/project_specific_prefs.inc'))
+        os.path.join(location, 'html/project/project_specific_prefs.inc'))
     install(srcdir('html/project.sample/cache_parameters.inc'),
-        self.dest('html/project/cache_parameters.inc'))
+        os.path.join(location, 'html/project/cache_parameters.inc'))
     install(srcdir('html/project.sample/project_description.php'),
-        self.dest('html/project/project_description.php'))
+        os.path.join(location, 'html/project/project_description.php'))
     install(srcdir('html/project.sample/daemons.inc'),
-        self.dest('html/project/daemons.inc'))
+        os.path.join(location, 'html/project/daemons.inc'))
     install(srcdir('html/project.sample/hosts.html'),
-        self.dest('html/project/hosts.html'))
+        os.path.join(location, 'html/project/hosts.html'))
     install(srcdir('html/project.sample/google_tag.html'),
-        self.dest('html/project/google_tag.html'))
+        os.path.join(location, 'html/project/google_tag.html'))
     install(srcdir('html/project.sample/server_summary.inc'),
-        self.dest('html/project/server_summary.inc'))
+        os.path.join(location, 'html/project/server_summary.inc'))
     
     install(srcdir('html/ops/ops_server_status.php'),
-    self.dest('html/ops/ops_server_status.php'))
+    os.path.join(location, 'html/ops/ops_server_status.php'))
+    
+upgrade_files(INSTALL_DIR)
 
 print ("Upgrading files... done")
 

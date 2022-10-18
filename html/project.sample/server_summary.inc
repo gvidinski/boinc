@@ -31,7 +31,7 @@
         item_html_for_summary(tra("Total queued jobs:"), $j->results_ready_to_send, true);
         // In progress
         item_html_for_summary(tra("In progress:"), $j->results_in_progress);
-        item_html_for_summary(tra("In progress:"), $j->results_in_progress_new);
+        // Total wus
         item_html_for_summary("Total: ", $j->wus_total);
         //Successes last 24h
         item_html_for_summary(tra("Successes last 24h:"), $j->wus_valid_past_24_hours);

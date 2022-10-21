@@ -179,9 +179,9 @@ function right() {
         }
     );
 
-    echo '</div>
-        <hr class="my-4">
-    ';
+    // echo '</div>
+    //     <hr class="my-4">
+    // ';
     
 }
 

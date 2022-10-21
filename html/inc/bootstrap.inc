@@ -290,16 +290,28 @@ function panel_old($title, $content_func, $class="panel-primary", $body_class=""
 //
 function grid($top_func, $left_func, $right_func, $left_width=6){
     echo '  <div class="content">
-        <div class="row">
+    ';
+    if ($top_func) {
+        echo '
+            <div class="row">
+            <div class="col-sm-12">
+        ';
+        $top_func();
+        echo '
+            </div>
+            </div>
+        ';
+    }
+    echo '  <div class="row">
     ';
 
     $left_func();
     $right_func();
-    // echo '      <div class="col-lg-'.$right_width.'">
-    //             <div class="mainnav">
-    //         </div>
-    //     </div>
-    // ';
+
+    echo'   </div>
+        </div>';
+    echo '  <hr class="my-4">
+    ';
 }
 
 function grid_old($top_func, $left_func, $right_func, $left_width=6) {

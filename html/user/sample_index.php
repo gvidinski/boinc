@@ -157,10 +157,8 @@ function left(){
                     //);
                 }
             }
-            require_once("../project/server_summary.inc");
-            // test();
-            // include("server_status_summary.php");
-            get_server_summary();
+            //require_once("../project/server_summary.inc");
+            //get_server_summary();
         }
     );
 }

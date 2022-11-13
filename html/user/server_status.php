@@ -84,8 +84,13 @@ function show_status_html($x) {
     page_head(tra("Project status"));
     $j = $x->jobs;
     $daemons = $x->daemons;
-    start_table();
-    echo "<tr><td>\n";
+    // echo ' <div class="content">
+    // ';
+    // start_table();
+    // echo "<tr><td>\n";
+    echo'<div class="row">
+        <div class="col-lg-6">
+    ';
             echo "
                  <h3>".tra("Server status")."</h3>
             ";
@@ -112,7 +117,10 @@ function show_status_html($x) {
                 echo "<br>";
                 server_status_project_info();
             }
-    echo "</td><td>\n";
+    // echo "</td><td>\n";
+    echo '</div>
+    <div class="col-lg-6">
+    ';
             echo "<h3>".tra("Computing status")."</h3>\n";
             echo "<h4>".tra("Work")."</h4>\n";
             start_table('table-striped');
@@ -137,10 +145,20 @@ function show_status_html($x) {
             item_html("Registered in past 24 hours", $j->hosts_past_24_hours);
             item_html("Current TeraFLOPS", round($j->flops / 1000, 2));
             end_table();
-    echo "</td></tr>\n";
-    end_table();
-
+    // echo "</td></tr>\n";
+    // end_table();
+    echo '</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+    ';
+    
     show_hosts();
+    echo '</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+    ';
 
     echo "<h3>".tra("Tasks by application")."</h3>\n";
     start_table('table-striped');
@@ -151,6 +169,7 @@ function show_status_html($x) {
         tra("Runtime of recent tasks in hours: average, min, max"),
         tra("Users in last 24 hours")
     );
+    // echo var_dump($j);
     foreach ($j->apps as $app) {
         if ($app->info) {
             $avg = empty($app->info->avg) ? 0.0 : $app->info->avg;
@@ -176,6 +195,9 @@ function show_status_html($x) {
         ";
     }
     end_table();
+    echo '  </div>
+        </div>
+    ';
     
     // show server software version.
     // If it's a release (minor# is even) link to github branch
@@ -196,6 +218,8 @@ function show_status_html($x) {
         echo tra("Database schema version: "), $j->db_revision;
     }
     echo "<p>Task data as of ".time_str($j->cached_time);
+    // echo '</div>
+    // ';
     page_tail();
 }
 

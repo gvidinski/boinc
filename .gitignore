@@ -239,3 +239,5 @@ boinc.html
 boinc_client.html
 boinccmd.html
 switcher.html
+/win_build/x64/Release
+/win_build/x64/Debug

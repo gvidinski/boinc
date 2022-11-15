@@ -31,7 +31,7 @@
 #endif
 
 #ifdef HAVE_DLFCN_H
-#include <dlfcn.h>
+//#include <dlfcn.h>
 #endif
 
 #ifdef __cplusplus

@@ -143,6 +143,23 @@ function total_posts($user) {
 function show_credit($user) {
     row2(tra("Total credit"), format_credit_large($user->total_credit));
     row2(tra("Recent average credit"), format_credit($user->expavg_credit));
+if ($user->total_credit >= 10000 AND $user->total_credit < 100000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" />");
+} elseif ($user->total_credit >= 100000 AND $user->total_credit < 500000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" />");
+} elseif ($user->total_credit >= 500000 AND $user->total_credit < 1000000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" />");
+} elseif ($user->total_credit >=1000000 AND $user->total_credit < 5000000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" /> <img src=\"img/ni.png\" alt=\"badge-niccolum\" title=\"Niccolum 1M\" />");
+} elseif ($user->total_credit >= 5000000 AND $user->total_credit < 10000000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" /> <img src=\"img/ni.png\" alt=\"badge-niccolum\" title=\"Niccolum 1M\" /> <img src=\"img/co.png\" alt=\"badge-cobaltum\" title=\"Cobaltum 5M\" />");
+} elseif ($user->total_credit >= 10000000 AND $user->total_credit < 50000000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" /> <img src=\"img/ni.png\" alt=\"badge-niccolum\" title=\"Niccolum 1M\" /> <img src=\"img/co.png\" alt=\"badge-cobaltum\" title=\"Cobaltum 5M\" /> <img src=\"img/pd.png\" alt=\"badge-palladium\" title=\"Palladium 10M\" />");
+} elseif ($user->total_credit >= 50000000 AND $user->total_credit < 100000000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" /> <img src=\"img/ni.png\" alt=\"badge-niccolum\" title=\"Niccolum 1M\" /> <img src=\"img/co.png\" alt=\"badge-cobaltum\" title=\"Cobaltum 5M\" /> <img src=\"img/pd.png\" alt=\"badge-palladium\" title=\"Palladium 10M\" /> <img src=\"img/au.png\" alt=\"badge-aurum\" title=\"Aurum 50M\" />");
+} elseif ($user->total_credit >= 100000000) {
+    row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" /> <img src=\"img/ni.png\" alt=\"badge-niccolum\" title=\"Niccolum 1M\" /> <img src=\"img/co.png\" alt=\"badge-cobaltum\" title=\"Cobaltum 5M\" /> <img src=\"img/pd.png\" alt=\"badge-palladium\" title=\"Palladium 10M\" /> <img src=\"img/au.png\" alt=\"badge-aurum\" title=\"Aurum 50M\" /> <img src=\"img/ir.png\" alt=\"badge-iridium\" title=\"Iridium 100M\" />");
+}
     if (function_exists("project_user_credit")) {
         project_user_credit($user);
     }

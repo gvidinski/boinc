@@ -173,7 +173,7 @@ function show_status_html($x) {
     foreach ($j->apps as $app) {
         if ($app->info) {
             $avg = empty($app->info->avg) ? 0.0 : $app->info->avg;
-            $min = empty($app->info->min) ? 0.0 : $app->info->info;
+            $min = empty($app->info->min) ? 0.0 : $app->info->min;
             $max = empty($app->info->max) ? 0.0 : $app->info->max;
             
             $avg = round($avg, 2);

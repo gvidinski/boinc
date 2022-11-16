@@ -308,8 +308,8 @@ function grid($top_func, $left_func, $right_func, $left_width=6){
     $left_func();
     $right_func();
 
-    echo'   </div>
-        </div>';
+    echo'   </div>';
+        // </div>';
     echo '  <hr class="my-4">
     ';
 }

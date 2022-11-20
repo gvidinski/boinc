@@ -3,13 +3,13 @@ html {
 }
 
 body {
-    text-align: justify;
+    /* text-align: justify; */
     font-weight: 400;
     color: #555555;
     padding-top: 56px;
     min-height: 100%;
 
-    display: grid;
+    /* display: grid; */
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     
@@ -89,11 +89,13 @@ footer {
   }
 
 .banner-row {
-    margin: auto;
     position: relative;
-    /* background-color: black; */
+    margin: auto;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
     max-width: 81.25rem;
-    max-height: 253px;
+    /* max-height: 253px; */
+    background-image: url("../img/asteroids_at_home_banner.png");
 }
 
 /* .img-banner{
@@ -118,6 +120,8 @@ footer {
     height: 100px;
     color: #f2f2f2;
     opacity: 0.5;
+    mask-image: -webkit-gradient(linear, left top, left bottom, 
+    from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
     -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, 
     from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 
@@ -125,9 +129,9 @@ footer {
 
 object.overlay-trilogo, .overlay-trilogo {
     position: relative;
-    top: -180px;
+    top: 50px;
     height: 116px;
-    margin-left: auto;;
+    margin-left: auto;
     right: 50px;
     z-index: 1000;
 }
@@ -496,7 +500,10 @@ footer .social-icons.light-icons a:hover {
     user-select: none;
     -ms-touch-action: pan-y;
     touch-action: pan-y;
-    -webkit-tap-highlight-color: transparent;
+    /* -webkit-tap-highlight-color: transparent; */
+}
+.slick-slider.tap-detector{
+    color: transparent;
 }
 
 .slick-list {

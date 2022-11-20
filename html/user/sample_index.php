@@ -210,7 +210,7 @@ function links_panel($url_prefix){
             </li>
             <li>1) <a href="http://boinc.berkeley.edu/download.php">'.tra("Download").'</a>, <strong>'.tra("install").'</strong> '.tra("and").' <strong>'.tra("run").'</strong> '.tra("the BOINC software").';<br>
             
-                2) '.tra("When prompted, enter the URL: ").' <strong>http://asteroidsathome.net/boinc/</strong>
+                2) '.tra("When prompted, enter the URL: ").' <strong>'.$url_prefix.'</strong>
             </li>
             <li> '.tra("If you have any problems").',
                 <a href="http://boinc.berkeley.edu/wiki/BOINC_Help" target="_blank">'.tra("get help here").'</a>
@@ -273,8 +273,12 @@ function links_panel($url_prefix){
 }
 
 page_head(null, null, true);
-
+// echo '<div class="row">
+// ';
 grid('top', 'left', 'right');
+
+// echo '</div>
+// ';
 
 // $lp = "../project/link_panes.php";
 // if (file_exists($lp)) {

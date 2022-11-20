@@ -121,7 +121,7 @@ function navbar_right($user) {
 //
 function navbar_menu($name, $items){
     echo '                      <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-'.$name.'" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             '.$name.'
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">';
@@ -200,7 +200,7 @@ function sample_navbar(
         $x[] = array(tra("Join"), $url_prefix."join.php");
         $x[] = array(tra("Preferences"), $url_prefix."prefs.php?subset=project");
     }
-    $x[] = array(tra("About %1", PROJECT), $url_prefix."about.php");
+    $x[] = array(tra("About %1", PROJECT), $url_prefix."../cs/article01.html");
     $x[] = array(tra("Help"), $url_prefix."welcome.php");
     navbar_menu(tra("Project"), $x);
 
@@ -289,8 +289,8 @@ function panel_old($title, $content_func, $class="panel-primary", $body_class=""
 // $left_width is the width of left column in 1/12 units.
 //
 function grid($top_func, $left_func, $right_func, $left_width=6){
-    echo '  <div class="content">
-    ';
+    // echo '  <div class="col-md-12">
+    // ';
     if ($top_func) {
         echo '
             <div class="row">
@@ -302,16 +302,17 @@ function grid($top_func, $left_func, $right_func, $left_width=6){
             </div>
         ';
     }
+
     echo '  <div class="row">
     ';
 
     $left_func();
     $right_func();
-
+    
     echo'   </div>';
-        // </div>';
-    echo '  <hr class="my-4">
-    ';
+    echo '  <hr class="my-4">';
+    //     </div>';
+    
 }
 
 function grid_old($top_func, $left_func, $right_func, $left_width=6) {

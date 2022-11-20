@@ -159,7 +159,7 @@ function project_banner($title, $prefix, $is_main) {
 
         echo '        
         <div class="row banner-row">
-            <img src="img/asteroids_at_home_banner.png" class="img-banner"/>
+            <!--<img src="img/asteroids_at_home_banner.png" class="img-banner"/>-->
             <img src="img/asteroids_at_home_logo.png" class="overlay-trilogo" />
             <img src="img/white_grad.png" class="banner_overlay"/>
             <!--<object type="image/svg+xml" data="img/logo_mff_en.svg" alt="Trio-Logo" class="overlay-trilogo">Trio-Logo</object>
@@ -175,37 +175,41 @@ function project_banner($title, $prefix, $is_main) {
     ';
     }
 
-    echo '    
-
-    <div class="row blue">
-    ';
+    // echo '    
+    // <div class="row blue">
+    // ';
     sample_navbar(secure_url_base(), get_logged_in_user(false), false);
     echo '         
     </header>
-
-    
-    <!-- </div> <!-- "main" -->
-    <div class="wrapper">
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap justify-content-md-center">
+        <main class="col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
     ';
 
     if($title){
-        echo '  <div class="content">
+        echo ' 
         <div class="row">
-        <div class="col-lg-6">
-        <div class="mainnav">
+        <div class="col-lg-12">
+        <!--<div class="mainnav">-->
         <h2 class="headline">'.$title.'</h2>
-        </div>
+        <!--</div>-->
         </div>
         </div>    
-      
+        
         ';
     }
 }
 
 function project_footer($show_return, $show_date, $prefix) {
+    global $base;
     // If you include any links, prepend URL with $prefix
     //
-    echo '<footer class="footer">
+    echo '
+        </main>
+        </div>
+        </div>
+
+        <footer class="footer">
         <div class="container">
         <div class="row">
         <div class="col-md-4">
@@ -238,7 +242,7 @@ function project_footer($show_return, $show_date, $prefix) {
             <div class="row margin-bottom-30px">
                 <div class="col-xs-6">
                     <ul class="list-unstyled footer-nav">
-                        <li><a href="'.$prefix.'about.php">'.tra("About %1", PROJECT).'</a></li>
+                        <li><a href="'.$prefix.'../cs/article01.html">'.tra("About %1", PROJECT).'</a></li>
                         <li><a href="'.$prefix.'old_news.php"/>'.tra("News").'</a></li>
                         <li><a href="'.$prefix.'forum_index.php">'.tra("Message boards").'</a></li>
                         <li><a href="'.$prefix.'team.php">'.tra("Tems").'</a></li>
@@ -278,9 +282,9 @@ function project_footer($show_return, $show_date, $prefix) {
                 <div class="column-md-6 social-connect">
                     <h3 class="footer-heading">GET CONNECTED</h3>
                     <ul class="list-inline social-icons">
-                        <li><a href="https://twitter.com/AsteroidsAtHome" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="https://www.facebook.com/profile.php?id=100086279088328" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="'.$prefix.'rss_main.php" class="rss-bg"><i class="fa fa-rss"></i></a></li>
+                        <li><a href="https://twitter.com/AsteroidsAtHome" class="twitter-bg" title="twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.facebook.com/profile.php?id=100086279088328" class="facebook-bg" title="facebook"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="'.$prefix.'rss_main.php" class="rss-bg" title="rss"><i class="fa fa-rss"></i></a></li>
                     </ul>
                 </div>
                 <div class="column-md-6 social-connect">
@@ -486,10 +490,12 @@ function show_app_totals($app_name, $appids) {
 $sub_projects = array(
     array("name" => "Remote Test", "short_name" => "RT", "appids" => array(16)),
     array("name" => "Uppercase", "short_name" => "UC", "appids" => array(1, 25)),
+    array("name" => "AsteroidsAthome", "short_name" => "UC", "appids" => array(3)),
 );
 
 function project_user_credit($user){
     global $sub_projects;
+
     foreach ($sub_projects as $sp) {
         show_app_credit_user($user, $sp["name"], $sp["appids"]);
     }

@@ -275,12 +275,13 @@ function page_head(
     $rsslink = $url_base."rss_main.php";
 
     if (!$caching) {
-        header("Content-type: text/html; charset=utf-8");
+        header("Content-type: text/html; charset=utf-8; X-Content-Type-Options: no-sniff");
         header("Expires: Mon, 26 Jul 1997 05:00:00 UTC");
             // Date in the past
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " UTC");
             // always modified
-        header("Cache-Control: $cache_control_extra no-cache, must-revalidate, post-check=0, pre-check=0");
+        // header("Cache-Control: $cache_control_extra no-cache, must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: $cache_control_extra no-cache, immutable");
             // for HTTP/1.1
         header("Pragma: no-cache");
             // for HTTP/1.0
@@ -304,7 +305,8 @@ function page_head(
     }
     
     echo "		  <title>$t</title>\n";
-    echo '          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    echo '          <meta charset=utf-8>
+            <!--<meta http-equiv="Cache-control" content="public">-->
     ';
     // echo '
     //     <meta charset="utf-8">
@@ -330,6 +332,8 @@ EOT;
     } else {
         echo '      <link type="text/css" rel="stylesheet" href="'.secure_url_base().'/css/bootstrap.css" media="screen">
         ';
+        // echo '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        // integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">';
             // echo'       <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
             // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.4.1/dist/cerulean/bootstrap.css" crossorigin="anonymous">
             //   <!--      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
@@ -362,7 +366,8 @@ EOT;
 	//echo "      <script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" integrity=\"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n\" crossorigin=\"anonymous\"></script>\n";
 	//echo "      <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\" integrity=\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\" crossorigin=\"anonymous\"></script>\n";
 	echo '		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-			<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+			<!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 			<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>';
 	echo '    
         </head>
@@ -374,11 +379,6 @@ EOT;
     }
     echo "<body $body_attrs>";
     display_cvs_versions();
-	// echo '<div class="wrapper">
-	echo  '<!-- <div class="main"> -->
-	';
-    // echo '<div class="container-fluid">
-    // ';
 
     switch($title) {    //kludge
     case tra("Log in"):
@@ -512,10 +512,13 @@ function pretty_time_str($x) {
 }
 
 function start_table_str($class="", $style="") {
-    $s = $style?'style="'.$style.'"':'';
-    return '<div class="table">
-      <table '.$s.' width="100%" class="table table-condensed '.$class.'" >
+    //$s = $style?'style="'.$style.'"':'';
+    $r = '<div class="bd-element">
+        <div class="table-responsive-md">
+        <table class="table '.$class.' " >
     ';
+
+    return $r;
 }
 
 function start_table($class="", $style="") {
@@ -524,6 +527,7 @@ function start_table($class="", $style="") {
 
 function end_table_str() {
     return '</table>
+        </div>
         </div>
     ';
 }
@@ -612,14 +616,16 @@ function row_array($x) {
 define ('ALIGN_RIGHT', 'style="text-align:right;"');
 
 function row_heading_array($x, $attrs=null, $class='bg-primary') {
-    echo "<tr>";
+    echo "<thead><tr>";
     $i = 0;
     foreach ($x as $h) {
         $a = $attrs?$attrs[$i]:"";
-        echo "<th $a class=\"$class\">$h</th>";
+        echo '<th scope="col" class="'.$class.'">'.$h.'</th>';
         $i++;
     }
-    echo "</tr>\n";
+    echo '</tr>
+    </thead>
+    ';
 }
 
 function row_heading($x, $class='bg-primary') {
@@ -904,7 +910,8 @@ function verify_numeric(&$value, $low, $high = false) {
 // Generate a "select" element from an array of values
 //
 function select_from_array($name, $array, $selection=null, $width=240) {
-    $out = '<select style="color:#000;"class="form-control input-sm" style="width:'.$width.'px" name="'.$name.'">"';
+    // $out = '<select class="form-control input-sm" style="width:'.$width.'px" name="'.$name.'" title="title">"';
+    $out = '<select class="form-control input-sm" name="'.$name.'" title="title">"';
 
     foreach ($array as $key => $value) {
         if ($value) {
@@ -961,7 +968,7 @@ function button_text($url, $text, $desc=null, $class="btn-success btn-sm") {
     if (!$desc) {
         $desc = $text;
     }
-    return sprintf(' <a href="%s" title="%s" class="btn %s">%s</a>',
+    return sprintf(' <a href="%s" title="%s" class="btn %s" role="button">%s</a>',
         $url, $desc, $class, $text
     );
 }
@@ -983,7 +990,8 @@ function show_image($src, $title, $alt, $height=null) {
     if ($height) {
         $h = "height=\"$height\"";
     }
-    echo "<img class=\"icon\" border=\"0\" title=\"$title\" alt=\"$alt\" src=\"$src\" $h>";
+    // echo "<img class=\"icon\" border=\"0\" title=\"$title\" alt=\"$alt\" src=\"$src\" $h>";
+    echo "<img class=\"icon\" title=\"$title\" alt=\"$alt\" src=\"$src\" $h>";
 }
 
 function show_project_down() {

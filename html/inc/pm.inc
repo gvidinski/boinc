@@ -268,11 +268,13 @@ function pm_notification($user) {
     $output = "";
     $unread = BoincPrivateMessage::count("userid=$user->id AND opened=0");
     
-    $output .= "<a href=\"pm.php?action=inbox\">".tra("Inbox")."</a>";
+    $output .= '<a href="pm.php?action=inbox">'.tra("Inbox").'</a>';
     if ($unread) {
-        $output .= "<span class=\"inboxunread\"> ($unread ".tra("unread").")</span>\n";
+        $output .= '<span class="inboxunread"> ('.$unread .' '.tra("unread").')</span>
+        ';
     }
-    $output .= " &middot; <a href=\"pm.php?action=new\">".tra("Write")."</a>\n";
+    $output .= ' &middot; <a href="pm.php?action=new">'.tra("Write").'</a>
+    ';
     return $output;
 }
 

@@ -131,35 +131,48 @@ function link_count($x) {
 // show a banner with search form on left and PM info on right
 //
 function show_forum_header($user) {
-    echo '<form action="forum_search_action.php" method="POST">
+    echo '<hr>
+    <!--<div class="">-->
+    <div class="row">
+    <div class="col-auto mr-auto">
+    <form action="forum_search_action.php" method="POST">
     ';
-    start_table();
-    echo '
-        <tr>
-    ';
+    //start_table();
+    // echo '
+    //     <tr>
+    // ';
 
     // Search
-    echo '
-        <td>
-        <input type="hidden" name="search_max_time" value="0">
+    // echo '
+    //     <td>';
+    echo '<input type="hidden" name="search_max_time" value="0">
         <input type="hidden" name="search_forum" value="-1">
         <input type="hidden" name="search_sort" value="'.CREATE_TIME_NEW.'">
-        <input type="text" class="" name="search_keywords">
+        <input type="text" class="" name="search_keywords" title="search">
         <input class="btn btn-primary btn-sm" title="'.tra("Search for words in forum messages").'" type="submit" value="'.tra("Search forums").'"><br>
         <small><a href="forum_search.php">'.tra("Advanced search").'</a></small>
-        </td>
+        
+        ';
+
+    echo '</td>
+    ';
+
+    echo '
+    </form>
+    </div>
     ';
 
     if ($user) {
-        echo "<td align=\"right\">\n";
-        echo "<p>".tra("Private messages").": ", pm_notification($user);
-        echo "</td>\n";
+        echo '<div class="col-auto">
+        '.tra("Private messages").': ', pm_notification($user).'
+        </div>
+        ';
     }
-    echo "</tr>
-    ";
-    end_table();
-    echo "</form>
-    ";
+
+    // row/content
+    echo '</div> 
+    <!--</div>-->
+    ';
 }
 
 // Output the forum/thread title.
@@ -171,11 +184,16 @@ function show_forum_title($category, $forum, $thread, $link_thread=false) {
         $is_helpdesk = false;
     }
 
-    $where = $is_helpdesk?tra("Questions and Answers"):tra("Message boards");
-    $top_url = $is_helpdesk?"forum_help_desk.php":"forum_index.php";
+    $where = $is_helpdesk ? tra("Questions and Answers") : tra("Message boards");
+    $top_url = $is_helpdesk ? "forum_help_desk.php" : "forum_index.php";
+
+    echo '<div class="row">
+    <div class="col-md-12">
+    ';
 
     if (!$forum && !$thread) {
-        echo "<span class=\"title\">$where</span>\n";
+        echo '<span class="title">'.$where.'</span>
+        ';
 
     } else if ($forum && !$thread) {
         echo "<span class=title>";
@@ -194,10 +212,14 @@ function show_forum_title($category, $forum, $thread, $link_thread=false) {
         if ($link_thread) {
             echo "</a>";
         }
-        echo "</span>";
+        echo '</span>
+            ';
     } else {
         echo "Invalid thread ID";
     }
+
+    echo '        </div>
+    </div>';
 }
 
 function show_team_forum_title($forum, $thread=null, $link_thread=false) {
@@ -228,7 +250,7 @@ function start_forum_table($headings) {
         $a[] = null;
     }
     $a[1] = 'style="width: 100%"';
-    start_table('table-striped');
+    start_table('table-striped table-sm');
     row_heading_array($headings, $a);
 }
 
@@ -244,7 +266,9 @@ function page_links($url, $nitems, $items_per_page, $start){
     $postshow = 3;
 
     $x = "";
-    
+    $x .= '<div class="row" name="nav-links">
+        <div class="col-md-12">
+    ';
     if ($nitems <= $items_per_page) return "";
     $npages = ceil($nitems / $items_per_page);
     $curpage = ceil($start / $items_per_page);
@@ -295,7 +319,9 @@ function page_links($url, $nitems, $items_per_page, $start){
             " &middot; ".tra("Next")
         );
     }
-    $x .= "\n";
+    $x .= '</div>
+    </div>
+    ';
     return $x;
 }
 
@@ -326,9 +352,7 @@ function can_reply($thread, $forum, $user) {
 // Show the posts in a thread for a user.
 // If $start is null, enforce jump-to-first-unread
 //
-function show_posts(
-    $thread, $forum, $start, $postid, $sort_style, $filter, $logged_in_user
-) {
+function show_posts($thread, $forum, $start, $postid, $sort_style, $filter, $logged_in_user) {
     $num_to_show = 20;
     if ($logged_in_user && $logged_in_user->prefs->display_wrap_postcount > 0) {
         $num_to_show = $logged_in_user->prefs->display_wrap_postcount;
@@ -425,6 +449,7 @@ function show_posts(
     start_forum_table($headings);
 
     $latest_shown_timestamp = 0;
+
     foreach ($posts as $post) {
         if ($num_skipped < $start) {
             $num_skipped++;
@@ -433,10 +458,8 @@ function show_posts(
         if ($num_shown == $num_to_show) {
             break;
         }
-        show_post(
-            $post, $thread, $forum, $logged_in_user, $start, $latest_viewed,
-            FORUM_CONTROLS, $filter
-        );
+        
+        show_single_post($post, $thread, $forum, $logged_in_user, $start, $latest_viewed, FORUM_CONTROLS, $filter);
         
         if ($post->timestamp > $latest_shown_timestamp) {
             $latest_shown_timestamp = $post->timestamp;
@@ -508,7 +531,7 @@ function avatar_url($url) {
 // Display an individual post.
 // Generates a table row with two cells: author and message
 //
-function show_post(
+function show_single_post(
     $post, $thread, $forum, $logged_in_user, $start=0,
     $latest_viewed=0, $controls=FORUM_CONTROLS, $filter=true
 ) {
@@ -583,15 +606,16 @@ function show_post(
     } else {
         $highlight = $is_posted_by_special;
     }
-    $class = $highlight?' style="border-left: 5px solid LightGreen" ':'';
+    $style = $highlight ? ' style="border-left: 5px solid LightGreen" ' : '';
+    // $class = 'class="col-sm-2"';
 
     // row and start of author col
     //
-    echo "
+    echo '
         <tr>
-        <td $class>
-        <a name=\"$post->id\"></a>
-    ";
+        <td '.$style. '>
+        <a name="'.$post->id.'"></a>
+    ';
 
     echo user_links($user, 0, 30);
     echo "<br>";
@@ -647,7 +671,8 @@ function show_post(
     echo '</span>
         </td>
         <td height="1%">
-        <div class="small">
+        <div class="row">
+        <div class="col-xl-6 small">
     ';
 
     if ($controls == FORUM_CONTROLS) {
@@ -668,9 +693,18 @@ function show_post(
     if ($can_edit && $controls != NO_CONTROLS) {
         show_button_small("forum_edit.php?id=".$post->id."$tokens", tra("Edit"), tra("Edit this message"));
     }
+    echo '</div>
+        <div class="col-xl-6 text-right btn-post-mod">
+    ';
+
     if (is_moderator($logged_in_user, $forum)) {
         show_post_moderation_links($config, $logged_in_user, $post, $forum, $tokens);
     }
+    echo ' </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">
+    ';
     if ($post->modified) {
         echo "<br>".tra("Last modified: %1", pretty_time_Str($post->modified));
     }
@@ -681,11 +715,14 @@ function show_post(
             "</a>"
         );
     }
+    echo ' </div>
+    </div>
+    ';
     if ($controls == FORUM_CONTROLS) {
         echo "</form>\n";
     }
     echo "</div>
-        <p>
+        
     ";
 
     if (!$filter || !$ignore_poster){
@@ -695,6 +732,7 @@ function show_post(
         // wants it to be shown for this post AND the logged in
         // user has signatures enabled: show it
         //
+        // print_r($options);
         $posttext = output_transform($posttext, $options);
         if ($post->signature && (!$logged_in_user || !$logged_in_user->prefs->hide_signatures)){
             $sig = output_transform($user->prefs->signature, $options);
@@ -703,13 +741,14 @@ function show_post(
 
         // show message in a panel
         //
-        echo '<div class="panel panel-default" style="word-break: break-word;">
-            <div class="panel-body">'
-            .$posttext
-            .'</div></div>
+        echo '<div class="row">
+            <div class="col-sm-12">
+            <div class="panel panel-default" style="word-break: break-word;">
+            <div class="panel-body">'.$posttext.'
+            </div></div>
         ';
 
-        echo '<div class="small"
+        echo '<div class="small">
             <span>ID: '. $post->id
         ;
         if ($no_forum_rating) {
@@ -741,8 +780,14 @@ function show_post(
     }
     // end of message col and row; add separator row
     //
-    echo "</td></tr>
-        <tr><td colspan=2></td></tr>
+    echo "</div>
+    </div>
+    </div>
+        </td>
+        </tr>
+        <tr>
+            <td colspan=2></td>
+        </tr>
     ";
 }
 
@@ -1171,6 +1216,8 @@ function get_thread_posts($threadid, $sort_style, $show_hidden) {
 function show_post_moderation_links(
     $config, $logged_in_user, $post, $forum, $tokens
 ){
+    // echo '<div class="col-xl-6 text-right btn-post-mod">
+    // ';
     $moderators_allowed_to_ban = parse_bool($config, "moderators_allowed_to_ban"); 
     $moderators_vote_to_ban = parse_bool($config, "moderators_vote_to_ban");
 
@@ -1211,6 +1258,7 @@ function show_post_moderation_links(
             show_button_small("forum_moderate_post.php?action=delete&amp;id=".$post->id."$tokens", tra("Delete"), tra("Delete this post"));
         }
     }
+    // echo '</div>';
 }
 
 // is the given user allowed to
@@ -1430,5 +1478,84 @@ function parse_forum_cookie() {
         }
     }
     return $x;
+}
+
+function render_sort_post_form($type_sort_styles, $sort_style, $action, $id){
+
+    echo '
+    <div class="col-sm-3">
+    <form action="'.$action.'" method="get" class="form-inline">
+    <input type="hidden" name="id" value="'.$id.'">
+    ';
+
+    echo select_from_array("sort", $type_sort_styles, $sort_style);
+    echo '
+    <input class="btn btn-success btn-sm" type="submit" value="Sort">
+    ';
+
+    echo '
+    </form>
+    </div>
+    ';
+}
+
+function test_table(){
+    echo '
+    <div class="bd-element">
+        <div class="table-responsive-md">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Heading</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+    </div>
+    ';
 }
 ?>

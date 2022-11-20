@@ -1230,6 +1230,24 @@ SELECT userid,
     ");
 }
 
+function update_11_16_2022(){
+    do_query("SET @tablename = \"private_messages\";
+    SET @columnname = \"deleted\";
+    SET @preparedStatement = (SELECT IF(
+      (
+        SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE
+          (table_name = @tablename)
+          AND (column_name = @columnname)
+      ) > 0,
+      \"SELECT 1\",
+      CONCAT(\"ALTER TABLE \", @tablename, \" ADD \", @columnname, \" TINYINT(1) NOT NULL DEFAULT 0;\")
+    ));
+    PREPARE alterIfNotExists FROM @preparedStatement;
+    EXECUTE alterIfNotExists;
+    DEALLOCATE PREPARE alterIfNotExists;");
+}
+
 // Updates are done automatically if you use "upgrade".
 //
 // If you need to do updates manually,
@@ -1239,6 +1257,7 @@ SELECT userid,
 // which ones you need).
 
 //update_3_17_2010();
+//update_11_16_2022();
 
 // in the following, the first element is a version number.
 // This used to be the Subversion version#,

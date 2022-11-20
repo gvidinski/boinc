@@ -84,17 +84,15 @@ function show_status_html($x) {
     page_head(tra("Project status"));
     $j = $x->jobs;
     $daemons = $x->daemons;
-    // echo ' <div class="content">
-    // ';
-    // start_table();
-    // echo "<tr><td>\n";
+
+    // *** SERVER STATUS ***
     echo'<div class="row">
         <div class="col-lg-6">
     ';
             echo "
                  <h3>".tra("Server status")."</h3>
             ";
-            start_table('table-striped');
+            start_table('table-striped table-no-sm');
             table_header(tra("Program"), tra("Host"), tra("Status"));
             foreach ($daemons->local_daemons as $d) {
                 daemon_html($d);
@@ -117,13 +115,15 @@ function show_status_html($x) {
                 echo "<br>";
                 server_status_project_info();
             }
-    // echo "</td><td>\n";
-    echo '</div>
-    <div class="col-lg-6">
+
+    echo '</div>';
+
+    // *** COMPUTING STATUAS ***
+    echo '<div class="col-lg-6" >
     ';
             echo "<h3>".tra("Computing status")."</h3>\n";
             echo "<h4>".tra("Work")."</h4>\n";
-            start_table('table-striped');
+            start_table('table-striped table-no-sm', );
             item_html("Tasks ready to send", $j->results_ready_to_send);
             item_html("Tasks in progress", $j->results_in_progress);
             item_html("Workunits waiting for validation", $j->wus_need_validate);
@@ -133,13 +133,13 @@ function show_status_html($x) {
             item_html("Transitioner backlog (hours)", number_format($j->transitioner_backlog, 2));
             end_table();
             echo "<h4>".tra("Users")."</h4>\n";
-            start_table('table-striped');
+            start_table('table-striped table-no-sm');
             item_html("With credit", $j->users_with_credit);
             item_html("With recent credit", $j->users_with_recent_credit);
             item_html("Registered in past 24 hours", $j->users_past_24_hours);
             end_table();
             echo "<h4>".tra("Computers")."</h4>\n";
-            start_table('table-striped');
+            start_table('table-striped table-no-sm');
             item_html("With credit", $j->hosts_with_credit);
             item_html("With recent credit", $j->hosts_with_recent_credit);
             item_html("Registered in past 24 hours", $j->hosts_past_24_hours);

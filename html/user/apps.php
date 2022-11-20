@@ -32,7 +32,7 @@ if ($xml) {
     page_head(tra("Applications"));
     echo tra("%1 currently has the following applications. When you participate in %1, tasks for one or more of these applications will be assigned to your computer. The current version of the application will be downloaded to your computer. This happens automatically; you don't have to do anything.", PROJECT)."<br><br>
     ";
-    start_table('table-striped');
+    start_table('table-striped table-sm');
 }
 
 $apps = BoincApp::enum("deprecated=0");

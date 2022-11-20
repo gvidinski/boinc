@@ -160,7 +160,9 @@ if ($user->total_credit >= 10000 AND $user->total_credit < 100000) {
 } elseif ($user->total_credit >= 100000000) {
     row2(tra("Badges"), "<img src=\"img/c.png\" alt=\"badge-carboneum\" title=\"Carboneum 10k\" /> <img src=\"img/si.png\" alt=\"badge-silicum\" title=\"Silicum 100k\" /> <img src=\"img/fe.png\" alt=\"badge-ferrum\" title=\"Ferrum 500k\" /> <img src=\"img/ni.png\" alt=\"badge-niccolum\" title=\"Niccolum 1M\" /> <img src=\"img/co.png\" alt=\"badge-cobaltum\" title=\"Cobaltum 5M\" /> <img src=\"img/pd.png\" alt=\"badge-palladium\" title=\"Palladium 10M\" /> <img src=\"img/au.png\" alt=\"badge-aurum\" title=\"Aurum 50M\" /> <img src=\"img/ir.png\" alt=\"badge-iridium\" title=\"Iridium 100M\" />");
 }
-    if (function_exists("project_user_credit")) {
+    $config = get_config();
+    $use_credit_by_app = parse_bool($config, "credit_by_app"); 
+    if (function_exists("project_user_credit") && $use_credit_by_app) {
         project_user_credit($user);
     }
 }
@@ -595,7 +597,7 @@ function show_account_private($user) {
     grid(
         false,
         function() use ($user) {
-            start_table();
+            start_table("table-no-sm");
             row1(tra("Account information"), 2, 'heading');
             show_user_info_private($user);
             show_preference_links();
@@ -613,7 +615,7 @@ function show_account_private($user) {
             }
         },
         function() use ($user) {
-            start_table();
+            start_table("table-no-sm");
             row1(tra("Community"));
             show_community_private($user);
             end_table();

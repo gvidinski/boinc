@@ -73,56 +73,71 @@ case 0:
     if ($category->is_helpdesk) {
         page_head(tra("Questions and Answers").' : '.$forum->title);
     } else {
-        page_head(tra("Message boards").' : '.$forum->title);
+        //page_head(tra("Message boards").' : '.$forum->title);
+        page_head($forum->title);
     }
+
+    //test_table();
     show_forum_header($user);
     show_forum_title($category, $forum, NULL);
     break;
+
 case 1:
     $team = BoincTeam::lookup_id($forum->category);
     page_head(tra("Team message board for %1", $team->name));
+
     show_forum_header($user);
     show_team_forum_title($forum);
     break;
 }
 
-echo '
-    <p>
-    <form action="forum_forum.php" method="get" class="form-inline">
-    <input type="hidden" name="id" value="'.$forum->id.'">
-    <table width="100%" cellspacing="0" cellpadding="0">
-    <tr valign="top">
-    <td colspan=2>
-';
+// TITLE END
 
-if (user_can_create_thread($user, $forum)) {
-    show_button(
-        "forum_post.php?id=$id", tra("New thread"), tra("Add a new thread to this forum")
-    );
+function render_create_thread_button($id, $user, $forum){
+    echo '
+        <div class="col-auto  mr-auto">
+        <form action="forum_forum.php" method="get" class="form-inline">
+        <input type="hidden" name="id" value="'.$forum->id.'">
+        ';
+    
+        if (user_can_create_thread($user, $forum)) {
+            show_button(
+                "forum_post.php?id=$id", tra("New thread"), tra("Add a new thread to this forum")
+            );
+        }
+    
+        echo '</form>
+        </div>
+        ';
 }
 
-echo '</td>
-    <td valign=top align="right">
-    <div class="form-group">
+function render_rss_message($forum){
+    echo '<div class="row">
+    <div class="col-sm-12">
+        '.
+        tra("This message board is available as an %1 RSS feed %2", "<a href=forum_rss.php?forumid=$forum->id&setup=1>", "<img src=img/feed_logo.png></a>");
+    
+        // echo'</main>
+        // </div>
+        // ';
+        echo '</div>
+        </div>
+        </div>
+        ';
+}
+
+echo '<div class="row">
 ';
-echo select_from_array("sort", $forum_sort_styles, $sort_style);
-echo '
-    <input class="btn btn-success btn-sm" type="submit" value="Sort">
-    </div>
-    </td>
-    </tr>
-    </table>
-    </form>
-    <p></p>
+render_create_thread_button($id, $user, $forum);
+render_sort_post_form($forum_sort_styles, $sort_style, "forum_forum.php", $forum->id);
+echo '    </div>
 ';
 
+//test_table();
 show_forum($forum, $start, $sort_style, $user);
-
-echo "
-    <p>".
-    tra("This message board is available as an %1 RSS feed %2", "<a href=forum_rss.php?forumid=$forum->id&setup=1>", "<img src=img/feed_logo.png></a>");
-
+render_rss_message($forum);
 page_tail();
+
 
 // This function shows the threads for the given forum
 // Starting from $start,
@@ -130,6 +145,7 @@ page_tail();
 // and using the features for the logged in user in $user.
 //
 function show_forum($forum, $start, $sort_style, $user) {
+    // return;
     $page_nav = page_links(
         "forum_forum.php?id=$forum->id&amp;sort=$sort_style",
         $forum->threads,
@@ -150,6 +166,9 @@ function show_forum($forum, $start, $sort_style, $user) {
         array("", "width=35%", "", "", "", "")
 
     );
+
+    echo '<tbody>
+    ';
 
     $sticky_first = !$user || !$user->prefs->ignore_sticky_posts;
 
@@ -181,7 +200,8 @@ function show_forum($forum, $start, $sort_style, $user) {
             echo '<tr>';
         }
 
-        echo "<td width=\"1%\"><nobr>";
+        // echo "<td width=\"1%\"><nobr>";
+        echo "<td><nobr>";
         if ($thread->hidden) {
             show_image(IMAGE_HIDDEN, tra("This thread is hidden"), tra("hidden"));
         } else if ($unread) {
@@ -204,7 +224,7 @@ function show_forum($forum, $start, $sort_style, $user) {
                     show_image(IMAGE_STICKY_LOCKED, tra("This thread is sticky and locked"), tra("sticky/locked"));
                 } else {
                     show_image(IMAGE_STICKY, tra("This thread is sticky"), tra("sticky"));
-                }
+                }echo "<img class=\"icon\" border=\"0\" title=\"$title\" alt=\"$alt\" src=\"$src\" $h>";
             } else {
                 if ($thread->locked) {
                     show_image(IMAGE_LOCKED, tra("This thread is locked"), tra("locked"));
@@ -231,8 +251,10 @@ function show_forum($forum, $start, $sort_style, $user) {
         ';
         flush();
     }
+    echo '</tbody>
+    ';
     end_table();
-    echo "<br>$page_nav";    // show page links
+    echo "$page_nav";    // show page links
 }
 
 ?>

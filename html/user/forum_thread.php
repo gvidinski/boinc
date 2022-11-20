@@ -105,6 +105,8 @@ $is_subscribed = $logged_in_user && BoincSubscription::lookup($logged_in_user->i
 
 show_forum_header($logged_in_user);
 
+//test_table();
+
 echo "<p>";
 switch ($forum->parent_type) {
 case 0:
@@ -146,11 +148,10 @@ if ($forum->parent_type == 0) {
 }
 
 echo '
+    <div class="row">
+    <div class="col-md-12">   
     <p>
     <form class="form-inline" action="forum_thread.php">
-    <table width="100%" cellspacing=0 cellpadding=0>
-    <tr>
-    <td>
 ';
 
 $reply_url = "";
@@ -269,17 +270,15 @@ if (!$logged_in_user) {
     }
 }
 
+echo '</form>
+    </div>
+    </div>
+<div class="row">
+';
 // Display a box that allows the user to select sorting of the posts
 //
-echo '</td><td align="right">
-    <input type="hidden" name="id" value="', $thread->id, '">
-    <div class="form-group">
-';
-echo select_from_array("sort", $thread_sort_styles, $sort_style);
-echo ' <input class="btn btn-default btn-sm" type="submit" value="'.tra('Sort').'">
-    </div>
-    </td></tr></table>
-    </form><p>
+render_sort_post_form($thread_sort_styles, $sort_style, "forum_thread.php", $thread->id);
+echo '</div>
 ';
 
 // if it's news, show original post first
@@ -288,9 +287,9 @@ if (is_news_forum($forum) && !is_moderator($logged_in_user, null)) {
     $sort_style = CREATE_TIME_OLD;
 }
 
-show_posts(
-    $thread, $forum, $start, $postid, $sort_style, $filter, $logged_in_user
-);
+// test_table();
+
+show_posts($thread, $forum, $start, $postid, $sort_style, $filter, $logged_in_user);
 
 if ($reply_url) {
     //echo "<br>";

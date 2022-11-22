@@ -597,7 +597,7 @@ function show_account_private($user) {
     grid(
         false,
         function() use ($user) {
-            start_table("table-no-sm");
+            start_table("");
             row1(tra("Account information"), 2, 'heading');
             show_user_info_private($user);
             show_preference_links();

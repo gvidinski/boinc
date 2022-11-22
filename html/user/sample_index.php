@@ -61,6 +61,8 @@ function top() {
 function left(){
     global $user, $no_web_account_creation, $master_url, $project_id;
     $title = $user?tra("Welcome, %1", $user->name):tra("What is %1?", PROJECT);
+    echo '  <div class="row">
+    ';
     panel($title,
         function() use($user, $title) {
             global $no_web_account_creation, $master_url, $project_id;
@@ -179,6 +181,8 @@ function right() {
         }
     );
 
+    echo '</div>
+    ';
     // echo '</div>
     //     <hr class="my-4">
     // ';

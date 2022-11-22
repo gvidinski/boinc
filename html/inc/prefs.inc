@@ -605,6 +605,10 @@ function print_prefs_form(
         $script = "prefs_edit.php";
         $submit_value = tra("Update preferences");
     }
+    echo '<div class="row">
+    <div class="col-xl-12">
+    ';
+
     echo "<form class=\"form-inline\" action=$script><input type=hidden name=subset value=$subset>
         ".form_tokens($user->authenticator);
     if ($venue) {
@@ -630,6 +634,9 @@ function print_prefs_form(
     row2("", "<input class=\"btn btn-success\" type=submit value=\"$submit_value\" name=\"action\">");
     end_table();
     echo "</form>\n";
+    echo '</div>
+        </div>
+        ';
 }
 
 ////////////////////////////////////////////

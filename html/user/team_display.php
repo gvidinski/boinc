@@ -57,6 +57,7 @@ if (!$get_from_db) {
         $get_from_db = true;
     }
 }
+
 if ($get_from_db) {
     $team->nusers = BoincUser::count("teamid=$teamid");
     $team->nusers_worked = BoincUser::count("teamid=$teamid and total_credit>0");

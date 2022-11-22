@@ -879,6 +879,7 @@ function post_rules() {
         tra("No messages intended to annoy or antagonize other people, or to hijack a thread."),
         tra("No messages that are deliberately hostile, threatening, or insulting."),
         tra("No abusive messages involving race, religion, nationality, gender, class or sexuality."),
+        tra("No messages related to any kind of illegal activities or actions against the law."),
         tra("Posts that violate these rules may be deleted."),
         tra("The posting privileges of violators may be suspended or revoked."),
         tra("If your account is suspended, don't create a new one."),
@@ -1499,63 +1500,63 @@ function render_sort_post_form($type_sort_styles, $sort_style, $action, $id){
     ';
 }
 
-function test_table(){
-    echo '
-    <div class="bd-element">
-        <div class="table-responsive-md">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-                <th scope="col">Heading</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-                <td>Cell</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+// function test_table(){
+//     echo '
+//     <div class="bd-element">
+//         <div class="table-responsive-md">
+//           <table class="table table-striped">
+//             <thead>
+//               <tr>
+//                 <th scope="col">#</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//                 <th scope="col">Heading</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               <tr>
+//                 <th scope="row">1</th>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//               </tr>
+//               <tr>
+//                 <th scope="row">2</th>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//               </tr>
+//               <tr>
+//                 <th scope="row">3</th>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//                 <td>Cell</td>
+//               </tr>
+//             </tbody>
+//           </table>
+//         </div>
 
-    </div>
-    ';
+//     </div>
+//     ';
 }
 ?>

@@ -303,13 +303,13 @@ function grid($top_func, $left_func, $right_func, $left_width=6){
         ';
     }
 
-    echo '  <div class="row">
-    ';
+    // echo '  <div class="row">
+    // ';
 
     $left_func();
     $right_func();
     
-    echo'   </div>';
+    // echo'   </div>';
     echo '  <hr class="my-4">';
     //     </div>';
     

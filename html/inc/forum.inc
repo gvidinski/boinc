@@ -1558,5 +1558,5 @@ function render_sort_post_form($type_sort_styles, $sort_style, $action, $id){
 
 //     </div>
 //     ';
-}
+// }
 ?>

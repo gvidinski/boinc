@@ -973,4 +973,20 @@ function boinc_real_escape_string($x) {
     }
 }
 
+function array_uunique(array $array, callable $comparator): array {
+    $unique_array = [];
+    do {
+        $element = array_shift($array);
+        $unique_array[] = $element;
+
+        $array = array_udiff(
+            $array,
+            [$element],
+            $comparator
+        );
+    } while (count($array) > 0);
+
+    return $unique_array;
+}
+
 ?>

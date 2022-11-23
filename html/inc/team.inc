@@ -188,6 +188,7 @@ function display_team_page($team, $user) {
     if (count($team->new_members)) {
         $first = true;
         $x = "";
+
         foreach ($team->new_members as $a) {
             if ($first) {
                 $first = false;
@@ -351,13 +352,27 @@ function new_member_list($teamid) {
     $new_members = array();
     $yesterday = time() - 86400;
     $deltas = BoincTeamDelta::enum("teamid=$teamid and timestamp>$yesterday and joining=1");
+    //print_r($deltas);
     foreach ($deltas as $delta) {
         $u = BoincUser::lookup_id($delta->userid);
+        // echo '<br>
+        // <br>';
+        // print_r($u);
+        // echo '<br>
+        // <br>';
+        // echo 'id: '.$u->id.'; name: '. $u->name.'<br>';
         if ($u->teamid == $teamid) {
             $new_members[] = $u;  // they might have later quit
         }
     }
-    return array_unique($new_members);
+    //print_r($new_members);
+
+    $comparer = function (BoincUser $user1, BoincUser $user2): int {
+        return $user1->id <=> $user2->id;
+    };
+
+    return array_uunique($new_members, $comparer);
+    //return $new_members;
 }
 
 function admin_list($teamid) {

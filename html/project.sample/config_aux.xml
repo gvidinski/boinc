@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<config>
+  <max_jobs_in_progress>
+    <project>
+      <gpu_limit>
+        <jobs>100</jobs>
+      </gpu_limit>
+      <cpu_limit>
+        <jobs>400</jobs>
+     </cpu_limit>
+   </project>
+  </max_jobs_in_progress>
+</config>

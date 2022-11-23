@@ -620,7 +620,7 @@ function row_heading_array($x, $attrs=null, $class='bg-primary') {
     $i = 0;
     foreach ($x as $h) {
         $a = $attrs?$attrs[$i]:"";
-        echo '<th scope="col" class="'.$class.'">'.$h.'</th>';
+        echo '<th scope="col" class="'.$class.'" '.$a .'>'.$h.'</th>';
         $i++;
     }
     echo '</tr>

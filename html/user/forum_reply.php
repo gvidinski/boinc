@@ -128,7 +128,7 @@ end_table();
 
 if ($parent_post) {
     start_forum_table(array(tra("Author"), tra("Message")));
-    show_post(
+    show_single_post(
         $parent_post, $thread, $forum, $logged_in_user, 0, false, false
     );
     end_table();

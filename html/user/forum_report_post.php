@@ -92,7 +92,7 @@ if ($success_page==1) {
     echo "<tr><th width=20% class=\"bg-primary\">".tra("Author")."</th>
         <th class=\"bg-primary\">".tra("Message")."</th></tr>
     ";
-    show_post($post, $thread, $forum, $user);
+    show_single_post($post, $thread, $forum, $user);
     row1(tra("Report post"));
     echo "<tr><td>
     ";

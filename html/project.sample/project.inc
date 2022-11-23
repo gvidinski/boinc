@@ -37,6 +37,22 @@ define("POST_REPORT_EMAILS", "moderator1@$master_url|moderator2@$master_url");
     // Email addresses separated by pipe ( | ) that will receive user reports
     // of offensive forum posts.
 
+// ------------ PHPMailer configuration
+
+$cfg_file = get_config();
+$useSMTPAuth = parse_boolint($cfg_file,  "<useSMTPAuth>");
+$SMTPSecure = parse_config($cfg_file , "<SMTPSecure>");
+$mail_host = parse_config($cfg_file, "<mail_host>" );
+$mail_port = parse_config($cfg_file, "<mail_port>");
+$mail_username = parse_config($cfg_file, "<mail_username>");
+$mail_password = parse_config($cfg_file, "<mail_password>");
+
+$mail_from = parse_config($cfg_file, "<mail_from>");
+$mail_add_reply_to_email = parse_config($cfg_file, "<mail_add_reply_to_email>");
+$mail_add_reply_to_name = parse_config($cfg_file, "<mail_add_reply_to_name>");
+$mail_add_set_from_email = parse_config($cfg_file, "<mail_add_set_from_email>");
+$mail_add_set_from_name = parse_config($cfg_file, "<mail_add_set_from_name>");
+
 //-------------- Delete Account
 //define("DELETE_DELAY", 2);
     // When deleting an account, invalidate the authenticator and then wait this
@@ -111,34 +127,61 @@ class BoincCustomWorkunit extends BoincWorkunit{
     }
 }
 
+function parse_boolint($xml, $tag) {
+    $x = parse_bool($xml, $tag);
+    if ($x) return 1;
+    return 0;
+}
+
 //-------------- PHPMailer
 
 // If you use PHPMailer, uncomment the following
 // and complete the function definition based on your SMTP server
 // (not all fields may be needed)
 //
-if (0) {
+//if (0) {
 function make_php_mailer() {
+    // $mail = new PHPMailer();
+    // $mail->IsSMTP();
+    // //$mail->Mailer = 'smtp';
+    // $mail->SMTPAuth = true;
+    // $mail->SMTPSecure = "tls";
+    // $mail->Host = "smtp.gmail.com";
+    // $mail->Port = 587;
+    // $mail->Username = "john.doe@gmail.com";
+    // $mail->Password = "xxx";
+    //     // Google's application-specific password,
+    //     // if you are using the 2-Step Verification: 16 characters, no spaces.
+    //     // OR: Put here the regular Gmail password if you are not using the
+    //     // 2-Step Verification with your Gmail account.
+    //     // See https://support.google.com/accounts/answer/185833?hl=en";
+    // $mail->SetFrom('admin@boincproject.com', 'John Doe');
+    // $mail->AddReplyTo("admin@boincproject.com", "John Doe");
+    // $mail->From = "admin@boincproject.com";
+
+    global $useSMTPAuth, $SMTPSecure, $mail_host, $mail_port, $mail_username, $mail_password, $mail_add_set_from_email, $mail_add_set_from_name,
+        $mail_add_reply_to_email, $mail_add_reply_to_name, $mail_from;
+
     $mail = new PHPMailer();
     $mail->IsSMTP();
-    //$mail->Mailer = 'smtp';
-    $mail->SMTPAuth = true;
-    $mail->SMTPSecure = "tls";
-    $mail->Host = "smtp.gmail.com";
-    $mail->Port = 587;
-    $mail->Username = "john.doe@gmail.com";
-    $mail->Password = "xxx";
+    $mail->SMTPAuth = $useSMTPAuth;
+    $mail->SMTPSecure = $SMTPSecure;
+    $mail->Host = $mail_host;
+    $mail->Port = $mail_port;
+    $mail->Username = $mail_username;
+    $mail->Password = $mail_password;
         // Google's application-specific password,
         // if you are using the 2-Step Verification: 16 characters, no spaces.
         // OR: Put here the regular Gmail password if you are not using the
         // 2-Step Verification with your Gmail account.
         // See https://support.google.com/accounts/answer/185833?hl=en";
-    $mail->SetFrom('admin@boincproject.com', 'John Doe');
-    $mail->AddReplyTo("admin@boincproject.com", "John Doe");
-    $mail->From = "admin@boincproject.com";
+    $mail->SetFrom($mail_add_set_from_email, $mail_add_set_from_name);
+    $mail->AddReplyTo($mail_add_reply_to_email, $mail_add_reply_to_name);
+    $mail->From = $mail_from;
+
     return $mail;
 }
-}
+//}
 
 //-------------- Header and footer
 

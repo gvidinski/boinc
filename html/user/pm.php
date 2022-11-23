@@ -130,7 +130,7 @@ function do_read($logged_in_user) {
     $sender = BoincUser::lookup_id($message->senderid);
 
     start_table();
-    echo "<tr><th>".tra("Subject")."</th><td>".$message->subject."</td></tr>";
+    echo '<tr><th width="20%">'.tra("Subject").'</th><td>'.$message->subject.'</td></tr>';
     echo "<tr><th>".tra("Sender")."</th><td>".user_links($sender, BADGE_HEIGHT_SMALL);
     show_block_link($message->senderid);
     echo "</td></tr>";

@@ -51,12 +51,31 @@ function send_email($user, $subject, $body, $body_html=null, $email_addr=null) {
         } else {
             $mail->Body = $body;
         }
+
+        // try{
+        //     $mail->action_function = static function ($result, $to, $cc, $bcc, $subject, $body) {
+        //         if ($result) {
+        //             echo "Message sent successfully\n";
+        //         } else {
+        //             echo "Message send failed\n";
+        //         }
+        //     };
+
+        //     if(!$mail->send()){
+        //         echo "ERROR sending email!";
+        //     };
+        // }
+        // catch (Exception $e){
+        //     echo $e->errorMessage();
+        // }
+
         if (!$mail->Send()) {
             echo $mail->ErrorInfo;
             return false;
         } else {
             return true;
         }
+
     } else {
         $headers ="";
         if (defined('EMAIL_FROM') && defined('EMAIL_FROM_NAME')) {

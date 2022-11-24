@@ -8,8 +8,13 @@
 // see inc/translation.inc and
 // https://boinc.berkeley.edu/trac/wiki/TranslateProject for details
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 require_once("../inc/util.inc");
 require_once("../inc/boinc_db.inc");
+require_once("../inc/PHPMailer/autoload.php");
 
 //-------------- Project name and owner
 
@@ -161,9 +166,12 @@ function make_php_mailer() {
 
     global $useSMTPAuth, $SMTPSecure, $mail_host, $mail_port, $mail_username, $mail_password, $mail_add_set_from_email, $mail_add_set_from_name,
         $mail_add_reply_to_email, $mail_add_reply_to_name, $mail_from;
+    
+    date_default_timezone_set('Etc/UTC');
 
     $mail = new PHPMailer();
     $mail->IsSMTP();
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
     $mail->SMTPAuth = $useSMTPAuth;
     $mail->SMTPSecure = $SMTPSecure;
     $mail->Host = $mail_host;
@@ -178,9 +186,20 @@ function make_php_mailer() {
     $mail->SetFrom($mail_add_set_from_email, $mail_add_set_from_name);
     $mail->AddReplyTo($mail_add_reply_to_email, $mail_add_reply_to_name);
     $mail->From = $mail_from;
+    //$mail->SMTPDebug  = 3;
+    //$mail->Debugoutput = function($str, $level) {echo "debug level $level; message: $str";}; //$mail->Debugoutput = 'echo';
+
+    // $mail->DebugOutput = function ($str, $level) {
+    //     file_put_contents(
+    //       '../../phpmailer.log',
+    //       date('Y-m-d H:i:s') . "\t" . $str,
+    //       FILE_APPEND | LOCK_EX
+    //     );
+    //   };
 
     return $mail;
 }
+
 //}
 
 //-------------- Header and footer

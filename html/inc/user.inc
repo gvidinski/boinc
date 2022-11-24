@@ -357,7 +357,7 @@ function friend_links($user) {
 // show user name, with links to profile if present.
 // if $badge_height is > 0, show badges
 // if $name_limit, limit name to N chars
-//
+// 
 function user_links($user, $badge_height=0, $name_limit=0){
     BoincForumPrefs::lookup($user);
     if (is_banished($user)) {

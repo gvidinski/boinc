@@ -185,10 +185,16 @@ function display_team_page($team, $user) {
         row2(tra('Admins'), $x);
     }
     $x = "0";
-    if (count($team->new_members)) {
+
+    
+    $new_members_count = count($team->new_members);
+    // echo 'Num: '. $new_members_count.'<br>';
+    // print_r($team->new_members);
+
+    if ($new_members_count) {
         $first = true;
         $x = "";
-
+        
         foreach ($team->new_members as $a) {
             if ($first) {
                 $first = false;
@@ -198,6 +204,9 @@ function display_team_page($team, $user) {
             $x .= user_links($a, BADGE_HEIGHT_MEDIUM);
         }
     }
+
+    // print_r($x);
+    // print_r($user);
     row2(tra('New members in last day'), $x);
     row2(tra('Total members'), "$team->nusers (<a href=team_members.php?teamid=$team->id&amp;offset=0&amp;sort_by=expavg_credit>".tra('view')."</a>)");
     if (!NO_STATS) {
@@ -365,14 +374,22 @@ function new_member_list($teamid) {
             $new_members[] = $u;  // they might have later quit
         }
     }
-    //print_r($new_members);
 
     $comparer = function (BoincUser $user1, BoincUser $user2): int {
+        // if(is_null($user1) || is_null($user2)){
+        //     return -1;
+        // }
+
         return $user1->id <=> $user2->id;
     };
+    if (count($new_members)< 1){
+        
+        return $new_members;
+    }
 
-    return array_uunique($new_members, $comparer);
-    //return $new_members;
+    $result = array_uunique($new_members, $comparer);
+
+    return $result;
 }
 
 function admin_list($teamid) {

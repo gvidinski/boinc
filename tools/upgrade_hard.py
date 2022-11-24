@@ -97,7 +97,7 @@ def install_tree(src, dest, unless_exists=False):
     if unless_exists and os.path.exists(dest):
         return
     try:
-        shutil.copytree(src, dest)
+        shutil.copytree(src, dest, dirs_exist_ok=True)
     except:
         print('failed to copy ' + src + ' to ' + dest)
         return

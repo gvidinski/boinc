@@ -17,6 +17,7 @@ Otherwise the project root is HOME/projects/project_root.
 
 '''
 
+import shutil
 import boinc_path_config
 from Boinc import boinc_project_path, tools
 from Boinc.setup_project import *
@@ -91,6 +92,15 @@ def install(src, dest, unless_exists=False):
     except:
         print('failed to copy ' + src + ' to ' + dest)
         return
+    
+def install_tree(src, dest, unless_exists=False): 
+    if unless_exists and os.path.exists(dest):
+        return
+    try:
+        shutil.copytree(src, dest)
+    except:
+        print('failed to copy ' + src + ' to ' + dest)
+        return
 
 def dest(self, *dirs):
         location = self.project_dir
@@ -112,6 +122,9 @@ def mkdir2(d):
     directories = ('html/user/img',
                    'html/user/css',
                    'html/user/fonts',
+                   'html/inc/PHPMailer',
+                   'html/inc/PHPMailer/language',
+                   'html/inc/PHPMailer/src'
     )
     [ mkdir2(os.path.join(dest_dir, x)) for x in directories ]
 
@@ -129,7 +142,10 @@ def upgrade_files(location):
     install(srcdir('html/inc/user.inc'),
         os.path.join(location, 'html/inc/user.inc'))
     install(srcdir('html/inc/util.inc'),
-        os.path.join(location, 'html/inc/util.inc'))    
+        os.path.join(location, 'html/inc/util.inc'))   
+     
+    install_tree(srcdir('html/inc/PHPMailer'),
+        os.path.join(location, 'html/inc/PHPMailer')) 
     
     install(srcdir('html/user/favicon.ico'),
         os.path.join(location, 'html/user/favicon.ico'))

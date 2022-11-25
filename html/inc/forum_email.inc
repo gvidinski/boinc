@@ -126,7 +126,7 @@ For assistance with ".PROJECT." go to ".$master_url;
 // send them an email notifying them of the reply.
 //
 function send_reply_notification_email($thread, $user){
-    $title = PROJECT . ": A user has posted to '". $thread->title ."'";
+    $title = "[".PROJECT."] A user has posted to '". $thread->title ."'";
     $link = secure_url_base() . "forum_thread.php?id=" . $thread->id;
     $body = "Another " . PROJECT . " user has posted to the thread
 \"" . $thread->title . "\".\n"

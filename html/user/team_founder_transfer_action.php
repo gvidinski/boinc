@@ -70,15 +70,15 @@ was sent using an automated system.";
 }
 
 function send_founder_transfer_decline_email($team, $user) {
-    $body = "The founder of ".$team->name." has declined your request
-to become the founder in ".PROJECT.".
+    $body = "The founder of team ".$team->name." in ".PROJECT." has declined your request
+to become a founder.
 You can repeat the request at least 90 days after the initial request.
     
 Please do not respond to this email.
 The mailbox is not monitored and the email
 was sent using an automated system.";
     
-    return send_email($user, PROJECT." team founder transfer declined", $body);
+    return send_email($user, "[".PROJECT."] Team founder transfer declined", $body);
 }
 
 $action = post_str("action");

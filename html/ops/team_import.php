@@ -173,7 +173,7 @@ function insert_case($t, $user) {
     if ($user) {
         $user->update("teamid=$team->id");
 
-        send_email($user, "Team created on ".PROJECT,
+        send_email($user, "[".PROJECT."] A team has been created",
         "An instance of the BOINC-wide team '$t->name'
 has been created on the project:
 name: ".PROJECT."

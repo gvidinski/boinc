@@ -145,53 +145,43 @@ function parse_boolint($xml, $tag) {
 // (not all fields may be needed)
 //
 //if (0) {
+
 function make_php_mailer() {
-    // $mail = new PHPMailer();
-    // $mail->IsSMTP();
-    // //$mail->Mailer = 'smtp';
-    // $mail->SMTPAuth = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Host = "smtp.gmail.com";
-    // $mail->Port = 587;
-    // $mail->Username = "john.doe@gmail.com";
-    // $mail->Password = "xxx";
-    //     // Google's application-specific password,
-    //     // if you are using the 2-Step Verification: 16 characters, no spaces.
-    //     // OR: Put here the regular Gmail password if you are not using the
-    //     // 2-Step Verification with your Gmail account.
-    //     // See https://support.google.com/accounts/answer/185833?hl=en";
-    // $mail->SetFrom('admin@boincproject.com', 'John Doe');
-    // $mail->AddReplyTo("admin@boincproject.com", "John Doe");
-    // $mail->From = "admin@boincproject.com";
+    // Google's application-specific password,
+    // if you are using the 2-Step Verification: 16 characters, no spaces.
+    // OR: Put here the regular Gmail password if you are not using the
+    // 2-Step Verification with your Gmail account.
+    // See https://support.google.com/accounts/answer/185833?hl=en";
 
     global $useSMTPAuth, $SMTPSecure, $mail_host, $mail_port, $mail_username, $mail_password, $mail_add_set_from_email, $mail_add_set_from_name,
         $mail_add_reply_to_email, $mail_add_reply_to_name, $mail_from;
     
     date_default_timezone_set('Etc/UTC');
 
-    $mail = new PHPMailer();
-    $mail->IsSMTP();
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->SMTPAuth = $useSMTPAuth;
-    $mail->SMTPSecure = $SMTPSecure;
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    // $mail->SMTPDebug = SMTP::DEBUG_LOWLEVEL;
+    // $mail->isSendmail(0);
+    // $mail->UseSendmailOptions = 0;
     $mail->Host = $mail_host;
     $mail->Port = $mail_port;
+    $mail->SMTPAuth = true;
     $mail->Username = $mail_username;
     $mail->Password = $mail_password;
-        // Google's application-specific password,
-        // if you are using the 2-Step Verification: 16 characters, no spaces.
-        // OR: Put here the regular Gmail password if you are not using the
-        // 2-Step Verification with your Gmail account.
-        // See https://support.google.com/accounts/answer/185833?hl=en";
+    if(!empty($SMTPSecure)){
+        $mail->SMTPSecure = $SMTPSecure;
+        // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        // $mail->SMTPSecure = 'tls';
+    }
     $mail->SetFrom($mail_add_set_from_email, $mail_add_set_from_name);
     $mail->AddReplyTo($mail_add_reply_to_email, $mail_add_reply_to_name);
     $mail->From = $mail_from;
-    //$mail->SMTPDebug  = 3;
+
     //$mail->Debugoutput = function($str, $level) {echo "debug level $level; message: $str";}; //$mail->Debugoutput = 'echo';
 
     // $mail->DebugOutput = function ($str, $level) {
     //     file_put_contents(
-    //       '../../phpmailer.log',
+    //       '../../log_paganini-virtual-machine/phpmailer.log',
     //       date('Y-m-d H:i:s') . "\t" . $str,
     //       FILE_APPEND | LOCK_EX
     //     );

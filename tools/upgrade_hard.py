@@ -143,6 +143,22 @@ def upgrade_files(location):
         os.path.join(location, 'html/inc/user.inc'))
     install(srcdir('html/inc/util.inc'),
         os.path.join(location, 'html/inc/util.inc'))   
+    install(srcdir('html/inc/email.inc'),
+        os.path.join(location, 'html/inc/email.inc')) 
+    install(srcdir('html/inc/forum_email.inc'),
+        os.path.join(location, 'html/inc/forum_email.inc')) 
+    install(srcdir('html/inc/boinc_db.inc'),
+        os.path.join(location, 'html/inc/boinc_db.inc')) 
+    install(srcdir('html/inc/team.inc'),
+        os.path.join(location, 'html/inc/team.inc')) 
+    install(srcdir('html/inc/forum.inc'),
+        os.path.join(location, 'html/inc/forum.inc')) 
+    install(srcdir('html/inc/prefs.inc'),
+        os.path.join(location, 'html/inc/prefs.inc')) 
+    install(srcdir('html/inc/server_version.inc'),
+        os.path.join(location, 'html/inc/server_version.inc')) 
+    install(srcdir('html/inc/text_transform.inc'),
+        os.path.join(location, 'html/inc/text_transform.inc')) 
      
     install_tree(srcdir('html/inc/PHPMailer'),
         os.path.join(location, 'html/inc/PHPMailer')) 
@@ -155,6 +171,33 @@ def upgrade_files(location):
         os.path.join(location, 'html/user/server_status.php'))
     install(srcdir('html/user/sample_index.php'),
         os.path.join(location, 'html/user/index.php'))
+    install(srcdir('html/user/pm.php'),
+        os.path.join(location, 'html/user/pm.php'))
+    install(srcdir('html/user/team_founder_transfer_action.php'),
+        os.path.join(location, 'html/user/team_founder_transfer_action.php'))
+    install(srcdir('html/user/forum_reply.php'),
+        os.path.join(location, 'html/user/forum_reply.php'))
+    install(srcdir('html/user/forum_report_post.php'),
+        os.path.join(location, 'html/user/forum_report_post.php'))
+    install(srcdir('html/user/team_display.php'),
+        os.path.join(location, 'html/user/team_display.php'))
+    install(srcdir('html/user/apps.php'),
+        os.path.join(location, 'html/user/apps.php'))
+    install(srcdir('html/user/forum_forum.php'),
+        os.path.join(location, 'html/user/forum_forum.php'))
+    install(srcdir('html/user/forum_thread.php'),
+        os.path.join(location, 'html/user/forum_thread.php'))
+    install(srcdir('html/user/server_status.php'),
+        os.path.join(location, 'html/user/server_status.php'))
+    install(srcdir('html/user/login_form.php'),
+        os.path.join(location, 'html/user/login_form.php'))
+    
+    install_tree(srcdir('html/user/css'),
+        os.path.join(location, 'html/user/css')) 
+    install_tree(srcdir('html/user/fonts'),
+        os.path.join(location, 'html/user/fonts')) 
+    install_tree(srcdir('html/user/img'),
+        os.path.join(location, 'html/user/img')) 
     
     install(srcdir('html/project.sample/project.inc'),
         os.path.join(location, 'html/project/project.inc'))
@@ -164,8 +207,6 @@ def upgrade_files(location):
         os.path.join(location, 'html/project/cache_parameters.inc'))
     install(srcdir('html/project.sample/project_description.php'),
         os.path.join(location, 'html/project/project_description.php'))
-    install(srcdir('html/project.sample/daemons.inc'),
-        os.path.join(location, 'html/project/daemons.inc'))
     install(srcdir('html/project.sample/hosts.html'),
         os.path.join(location, 'html/project/hosts.html'))
     install(srcdir('html/project.sample/google_tag.html'),
@@ -173,8 +214,14 @@ def upgrade_files(location):
     install(srcdir('html/project.sample/server_summary.inc'),
         os.path.join(location, 'html/project/server_summary.inc'))
     
+    install(srcdir('html/ops/index.php'),
+    os.path.join(location, 'html/ops/index.php'))
     install(srcdir('html/ops/ops_server_status.php'),
     os.path.join(location, 'html/ops/ops_server_status.php'))
+    install(srcdir('html/ops/db_update.php'),
+    os.path.join(location, 'html/ops/db_update.php'))
+    install(srcdir('html/ops/team_import.php'),
+        os.path.join(location, 'html/ops/team_import.php'))
     
 upgrade_files(INSTALL_DIR)
 

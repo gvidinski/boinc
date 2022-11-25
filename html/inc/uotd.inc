@@ -131,7 +131,7 @@ function select_uotd($force_new = false) {
         $u->email_addr = UOTD_ADMIN_EMAIL;
         $u->name = "UOTD admin";
         send_email($u,
-            PROJECT . ": User of the Day pool is running low!",
+            "[".PROJECT."] User of the Day pool is running low!",
             "The pool of approved candidates for User of the Day has".
             " reached your assigned threshold: there are now only " . $result->num_rows . " approved users.\n\n".
             "To approve more candidates for User of the Day,".

@@ -19,10 +19,15 @@
 // email-related utilities.
 // Don't put specific message text here.
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 require_once("../inc/util.inc");
 require_once("../inc/token.inc");
 require_once("../project/project.inc");
 require_once("../inc/token.inc");
+require_once("../inc/PHPMailer/autoload.php");
 
 // send an email, using PHPMailer or not.
 //
@@ -37,17 +42,19 @@ function send_email($user, $subject, $body, $body_html=null, $email_addr=null) {
             echo "PHPMailer not installed";
             return false;
         }
+
         $mail = make_php_mailer();
+
         if ($email_addr) {
-            $mail->AddAddress($email_addr, $user->name);
+            $mail->addAddress($email_addr, $user->name);
         } else {
-            $mail->AddAddress($user->email_addr, $user->name);
+            $mail->addAddress($user->email_addr, $user->name);
         }
         $mail->Subject = $subject;
         if ($body_html) {
             $mail->AltBody = $body;
             $mail->Body = $body_html;
-            $mail->IsHTML(true);
+            $mail->isHTML(true);
         } else {
             $mail->Body = $body;
         }
@@ -69,7 +76,7 @@ function send_email($user, $subject, $body, $body_html=null, $email_addr=null) {
         //     echo $e->errorMessage();
         // }
 
-        if (!$mail->Send()) {
+        if (!$mail->send()) {
             echo $mail->ErrorInfo;
             return false;
         } else {

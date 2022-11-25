@@ -202,6 +202,8 @@ function do_send_team($logged_in_user) {
     foreach ($users as $user) {
         pm_send_msg($logged_in_user, $user, $subject, $content, true);
     }
+    // return;
+
     page_head(tra("Message sent"));
     echo tra("Your message was sent to %1 team members.", count($users));
     page_tail();
@@ -341,6 +343,10 @@ if (!$action) {
 if (!$action) {
     $action = "inbox";
 }
+
+// include("smtp_check.php");
+//include("smpt_send.php");
+///>
 
 if ($action == "inbox") {
     do_inbox($logged_in_user);

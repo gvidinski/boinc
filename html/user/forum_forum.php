@@ -201,6 +201,8 @@ function show_forum($forum, $start, $sort_style, $user) {
         }
 
         // echo "<td width=\"1%\"><nobr>";
+        $alt = "Sticky";
+        $src = "img/sticky_post.png";
         echo "<td><nobr>";
         if ($thread->hidden) {
             show_image(IMAGE_HIDDEN, tra("This thread is hidden"), tra("hidden"));
@@ -224,7 +226,7 @@ function show_forum($forum, $start, $sort_style, $user) {
                     show_image(IMAGE_STICKY_LOCKED, tra("This thread is sticky and locked"), tra("sticky/locked"));
                 } else {
                     show_image(IMAGE_STICKY, tra("This thread is sticky"), tra("sticky"));
-                }echo "<img class=\"icon\" border=\"0\" title=\"$title\" alt=\"$alt\" src=\"$src\" $h>";
+                } //echo "<img class=\"icon\" border=\"0\" title=\"$thread->title\" alt=\"$alt\" src=\"$src\" $h>";
             } else {
                 if ($thread->locked) {
                     show_image(IMAGE_LOCKED, tra("This thread is locked"), tra("locked"));

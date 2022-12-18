@@ -68,7 +68,7 @@ function send_moderation_email($forum, $post, $thread, $explanation, $action) {
     $body = "";
     $user = BoincUser::lookup_id($post->user);
 
-    $subject = PROJECT." moderation notice";
+    $subject = '['.PROJECT.'] Moderation notice';
 
     $body = "Your post [ID $post->id] in thread '$thread->title'
 ".secure_url_base()."forum_thread.php?id=$thread->id#$post->id
@@ -91,16 +91,15 @@ Subject: $subject
 
 $body
 ";
-    $subject = PROJECT.": post $action in '$thread->title'";
+    $subject = '['.PROJECT.'] Post '.$action.' in \''.$thread->title.'\'';
     $success &= mail_report_list($forum, $subject, $body);
     return $success;
 }
 
 //////////////////// thread hidden/unhidden ///////////
 //
-function send_thread_moderation_email(
-    $forum, $thread, $message, $action_name, $explanation
-) {
+function send_thread_moderation_email($forum, $thread, $message, $action_name, $explanation)
+{
     global $master_url;
 
     $moderator = get_logged_in_user();
@@ -115,7 +114,7 @@ $explanation
 
 For assistance with ".PROJECT." go to ".$master_url;
 
-    $subject = "THREAD $action REPORT: $thread->title";
+    $subject = "THREAD $action_name REPORT: $thread->title";
     $success = mail_report_list($forum, $subject, $body);
     $success &= send_email($user, $subject, $body);
     pm_send_msg($user, $user, $subject, $body, false);

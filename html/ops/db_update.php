@@ -1230,6 +1230,7 @@ SELECT userid,
     ");
 }
 
+// This will add 'deleted' field with default value of "0" to the 'private_messages' table
 function update_11_16_2022(){
     do_query("SET @tablename = \"private_messages\";
     SET @columnname = \"deleted\";
@@ -1248,6 +1249,25 @@ function update_11_16_2022(){
     DEALLOCATE PREPARE alterIfNotExists;");
 }
 
+// This will add 'deleted' field with default value of "0" to the 'post' table
+function update_11_28_2022(){
+    do_query('SET @tablename = "post";
+    SET @columnname = "deleted";
+    SET @preparedStatement = (SELECT IF(
+      (
+        SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE
+          (table_name = @tablename)
+          AND (column_name = @columnname)
+      ) > 0,
+      "SELECT 1",
+      CONCAT("ALTER TABLE ", @tablename, " ADD ", @columnname, " TINYINT(1) NOT NULL DEFAULT 0;")
+    ));
+    PREPARE alterIfNotExists FROM @preparedStatement;
+    EXECUTE alterIfNotExists;
+    DEALLOCATE PREPARE alterIfNotExists;');
+}
+
 // Updates are done automatically if you use "upgrade".
 //
 // If you need to do updates manually,
@@ -1256,8 +1276,11 @@ function update_11_16_2022(){
 // (Look at your DB structure using "explain" queries to see
 // which ones you need).
 
-//update_3_17_2010();
+//update_3_17_2010(); - this is an example...
+
+// Asteroids@home related changes:
 //update_11_16_2022();
+//update_11_28_2022()
 
 // in the following, the first element is a version number.
 // This used to be the Subversion version#,

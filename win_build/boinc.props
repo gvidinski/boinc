@@ -6,6 +6,7 @@
         <VcpkgExe>$(VcpkgRootDir)\vcpkg.exe</VcpkgExe>
         <VcpkgTripletConfig Condition="'$(VcpkgTripletConfig)' == ''">default</VcpkgTripletConfig>
         <VcpkgCacheDir Condition="'$(VcpkgCacheDir)' == ''">..\..\boinc_depends_win_vs2019</VcpkgCacheDir>
+        <VcpkgTripletName Condition="'$(VcpkgTripletName)|$(Platform)' == '|Win32'">x86-windows-static</VcpkgTripletName>
         <VcpkgTripletName Condition="'$(VcpkgTripletName)|$(Platform)' == '|x64'">x64-windows-static</VcpkgTripletName>
         <VcpkgTripletName Condition="'$(VcpkgTripletName)|$(Platform)' == '|arm64'">arm64-windows-static</VcpkgTripletName>
         <VcpkgInstalledDir Condition="'$(VcpkgInstalledDir)' == ''">$(VcpkgRootDir)\installed\$(VcpkgTripletName)</VcpkgInstalledDir>

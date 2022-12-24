@@ -1,0 +1,22 @@
+﻿  boinc_db.cpp
+D:\boincsdk\boinc\db\boinc_db.cpp(2919,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  db_base.cpp
+D:\boincsdk\boinc\db\db_base.cpp(537,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  credit.cpp
+D:\boincsdk\boinc\sched\credit.cpp(1126,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  sched_config.cpp
+D:\boincsdk\boinc\sched\sched_config.cpp(447,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  sched_limit.cpp
+D:\boincsdk\boinc\sched\sched_limit.cpp(99,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  sched_shmem.cpp
+D:\boincsdk\boinc\sched\sched_shmem.cpp(446,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  sched_util.cpp
+D:\boincsdk\boinc\sched\sched_util.cpp(139,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  sched_util_basic.cpp
+D:\boincsdk\boinc\sched\sched_util_basic.cpp(388,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  backend_lib.cpp
+D:\boincsdk\boinc\tools\backend_lib.cpp(691,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  process_input_template.cpp
+D:\boincsdk\boinc\tools\process_input_template.cpp(634,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  process_result_template.cpp
+D:\boincsdk\boinc\tools\process_result_template.cpp(167,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?

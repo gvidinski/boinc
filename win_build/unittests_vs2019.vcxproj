@@ -25,6 +25,7 @@
     <ProjectGuid>{e3cfbba5-0bbc-4237-b3f8-7e7729df7e42}</ProjectGuid>
     <RootNamespace>unittestsvs2019</RootNamespace>
     <ProjectName>unittests</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

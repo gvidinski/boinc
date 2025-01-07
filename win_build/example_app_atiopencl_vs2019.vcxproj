@@ -23,6 +23,7 @@
     <ProjectGuid>{C41F5C14-772D-4B56-BAF3-0FE8BF6807D5}</ProjectGuid>
     <RootNamespace>atiopencl</RootNamespace>
     <ProjectName>example_app_atiopencl</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

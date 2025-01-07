@@ -23,6 +23,7 @@
     <ProjectGuid>{F243B93C-73CB-44E7-9BDC-847BB95C27CA}</ProjectGuid>
     <RootNamespace>vboxwrapper</RootNamespace>
     <ProjectName>vboxwrapper</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

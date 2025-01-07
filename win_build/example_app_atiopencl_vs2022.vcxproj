@@ -55,6 +55,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -121,6 +122,10 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <GenerateManifest>false</GenerateManifest>
+    <LibraryPath>$(AMDAPPSDKROOT)lib\x86_64;D:\boincsdk\boinc\win_build\Build\x64\Debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
   </PropertyGroup>
@@ -132,14 +137,14 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..;../api;../lib;../samples/image_libs;../samples/jpeglib;../samples/glut;$(ATISTREAMSDKROOT)\include;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ATI_OS_WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\boincsdk\boinc\win_build\Build\x64\Debug;$(AMDAPPSDKROOT)include;D:\boincsdk\boinc\api;D:\boincsdk\boinc\lib;D:\boincsdk\boinc\samples/image_libs;D:\boincsdk\boinc\\samples/jpeglib;D:\boincsdk\boinc\samples/glut;$(ATISTREAMSDKROOT)\include;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ATI_OS_WIN;_WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opencl.lib;cfgmgr32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ATISTREAMSDKROOT)\lib\x86_64;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/debug/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenCL.lib;libgraphics2.lib;cfgmgr32.lib;libboinc.lib;libboincapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(AMDAPPSDKROOT)lib\x86_64_;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/debug/lib;D:\boincsdk\boinc\win_build\Build\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -205,13 +210,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..;../api;../lib;../samples/image_libs;../samples/jpeglib;../samples/glut;$(ATISTREAMSDKROOT)\include;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../api;../lib;../samples/image_libs;../samples/jpeglib;../samples/glut;$(AMDAPPSDKROOT)include;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ATI_OS_WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opencl.lib;cfgmgr32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ATISTREAMSDKROOT)\lib\x86_64;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencl.lib;cfgmgr32.lib;libgraphics2.lib;libboincopencl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\boincsdk\boinc\win_build\Build\x64\Debug;$(AMDAPPSDKROOT)lib\x86_64;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
     </Link>

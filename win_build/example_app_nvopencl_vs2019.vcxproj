@@ -23,6 +23,7 @@
     <ProjectGuid>{BDC69EE0-033E-4AE1-B6AD-670E26FC117B}</ProjectGuid>
     <RootNamespace>nvopencl</RootNamespace>
     <ProjectName>example_app_nvopencl</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

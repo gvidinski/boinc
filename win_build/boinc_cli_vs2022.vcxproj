@@ -60,8 +60,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
-    <PreferredToolArchitecture>x86</PreferredToolArchitecture>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
@@ -163,6 +164,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgInstalledDir>$(VcpkgRootDir)\installed\$(VcpkgTripletName)</VcpkgInstalledDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -233,7 +235,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../win_build;../lib;../api;../client/win;../client;..;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/openssl/;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/curl/;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include;../coprocs/NVIDIA/include;../coprocs/OpenCL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_CONSOLE;_USE_CURL;USE_SSL;USE_SSLEAY;USE_OPENSSL;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CONSOLE;_USE_CURL;USE_SSL;USE_SSLEAY;USE_OPENSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -401,7 +403,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>../win_build;../lib;../api;../client/win;../client;..;$(VcpkgRootDir)\installed\$(VcpkgTripletName)/include/openssl;$(VcpkgRootDir)/installed/$(VcpkgTripletName)/include/curl;$(VcpkgRootDir)/installed/$(VcpkgTripletName)/include;../coprocs/NVIDIA/include;../coprocs/OpenCL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CONSOLE;_USE_CURL;USE_SSL;USE_SSLEAY;USE_OPENSSL;ZLIB_WINAPI;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CONSOLE;_USE_CURL;USE_SSL;USE_SSLEAY;USE_OPENSSL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -427,12 +429,12 @@
       <AdditionalDependencies>libboinc.lib;zlib.lib;libcrypto.lib;libssl.lib;libcurl.lib;nvapi.lib;wsock32.lib;winhttp.lib;winmm.lib;sensapi.lib;userenv.lib;iphlpapi.lib;kernel32.lib;user32.lib;advapi32.lib;shell32.lib;secur32.lib;wtsapi32.lib;Ws2_32.Lib;Crypt32.Lib;Wldap32.Lib</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>D:\boincsdk\boinc\3rdParty\Windows\vcpkg\installed\x86-windows-static\lib;$(SolutionDir)Build\$(Platform)\$(Configuration);../coprocs/NVIDIA/mswin/$(Platform)/$(Configuration)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\boincsdk\boinc\3rdParty\Windows\vcpkg\installed\x86-windows-static\lib;$(SolutionDir)Build\$(Platform)\$(Configuration);../coprocs/NVIDIA/mswin/$(Platform)/$(Configuration)/lib;$(VcpkgRoot)\installed\$(VcpkgTripletName)\lib;$(VcpkgRoot)\installed\$(VcpkgTripletName)\lib\curl;$(VcpkgRoot)\installed\$(VcpkgTripletName)\lib\openssl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ProgramDatabaseFile>.\Build\$(Platform)\$(Configuration)\boinc_exe.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
-      <OptimizeReferences>false</OptimizeReferences>
+      <OptimizeReferences>true</OptimizeReferences>
       <SetChecksum>true</SetChecksum>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImageHasSafeExceptionHandlers />

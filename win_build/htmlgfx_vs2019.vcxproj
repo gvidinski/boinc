@@ -23,6 +23,7 @@
     <ProjectGuid>{25662612-421F-42F5-B5E1-D69ECBF3F5BB}</ProjectGuid>
     <RootNamespace>htmlgfx</RootNamespace>
     <ProjectName>htmlgfx</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

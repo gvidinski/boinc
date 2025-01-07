@@ -23,6 +23,7 @@
     <ProjectGuid>{C3163ACA-C2E6-49D2-AA21-B8B953331EF7}</ProjectGuid>
     <RootNamespace>boinc_ss</RootNamespace>
     <ProjectName>boinc_ss</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

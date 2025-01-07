@@ -49,10 +49,12 @@
 #include "util.h"
 
 #include "parse.h"
+//#include <stdlib.h>
 
 using std::string;
 
-unsigned long long boinc_strtoull(const char *str, char **endptr, int base) {
+unsigned long long boinc_strtoull(const char *str, char **endptr, int base) 
+{
 #if (defined (__cplusplus) && __cplusplus > 199711L) || defined(HAVE_STRTOULL) || defined(__MINGW32__)
     return strtoull(str, endptr, base);
 #elif defined(_WIN32) && !defined(__MINGW32__)

@@ -24,6 +24,7 @@
     <ProjectGuid>{0DCD2FE4-0604-4307-ABAA-C61F0065D717}</ProjectGuid>
     <RootNamespace>test_boinc_zip</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

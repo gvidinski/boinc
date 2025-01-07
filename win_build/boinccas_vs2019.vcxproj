@@ -23,6 +23,7 @@
     <ProjectGuid>{49723CA5-DA05-43C0-93AB-6FD30D046919}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>boinccas</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

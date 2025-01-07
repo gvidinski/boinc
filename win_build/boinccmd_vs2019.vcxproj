@@ -23,6 +23,7 @@
     <ProjectGuid>{8F37E1F3-3A68-4A1D-9579-A1210BDD055E}</ProjectGuid>
     <RootNamespace>boinc_guirpctest</RootNamespace>
     <ProjectName>boinccmd</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
